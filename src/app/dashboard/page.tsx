@@ -13,9 +13,7 @@ const RequestSchema = z.object({
   blood_group: z.string(),
   blood_request_type: z.string(),
   district: z.string(),
-  date_of_donation: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Invalid date format",
-  }),
+  date_of_donation: z.string().nullable(),
   gender: z.enum(["Male", "Female", "Other"]),
   details: z.string(),
   cancel: z.boolean(),
@@ -66,6 +64,8 @@ function DashboardPage() {
       const data: unknown = await response_Dashboard.json();
       const parsedData = ApiResponseSchema.parse(data);
       setUserRequests(parsedData.my_requests);
+    } else {
+      setIsRequestsLoading(false);
     }
 
     if (response_Profile.ok) {
@@ -73,6 +73,8 @@ function DashboardPage() {
       const data: unknown = await response_Profile.json();
       const validatedData = UserProfileSchemaArray.parse(data);
       setProfile(validatedData);
+    } else {
+      setIsProfileLoading(false);
     }
   }
 
@@ -157,55 +159,3 @@ export default function Page() {
     </Suspense>
   );
 }
-
-// {userRequests ? (
-//   userRequests.length > 0 ? (
-//     <div className="divide space-y-3 divide-y divide-black/15">
-//       {userRequests.map((item) => (
-//         <div key={item.id} className="py-2">
-//           <div className="flex items-center justify-between">
-//             <p>{item.date_of_donation}</p>
-//             <p>{item.blood_request_type}</p>
-//             <p>{item.blood_group}</p>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   ) : (
-//     <p>No requests are made yet.</p>
-//   )
-// ) : (
-//   <div className="flex w-full items-center justify-center py-8">
-//     {isLoading ? (
-//       <Loader2 className="animate-spin" size={20} />
-//     ) : (
-//       <p>No requests are made yet.</p>
-//     )}
-//   </div>
-// )}
-// {profile ? (
-//   profile.map((item, index) => (
-//     <div key={index} className="divide divide-y divide-black/15">
-//       <div className="flex items-center justify-between py-3">
-//         <p>username</p>
-//         <p>{item.user}</p>
-//       </div>
-//       <div className="flex items-center justify-between py-3">
-//         <p>blood group</p>
-//         <p>{item.blood_group}</p>
-//       </div>
-//       <div className="flex items-center justify-between py-3">
-//         <p>district</p>
-//         <p>{item.district ? item.district : "N/A"}</p>
-//       </div>
-//       <div className="flex items-center justify-between py-3">
-//         <p>available</p>
-//         <p>{item.is_available ? "yes" : "no"}</p>
-//       </div>
-//     </div>
-//   ))
-// ) : (
-//   <div className="flex w-full items-center justify-center py-8">
-//     <Loader2 className="animate-spin" size={20} />
-//   </div>
-// )}

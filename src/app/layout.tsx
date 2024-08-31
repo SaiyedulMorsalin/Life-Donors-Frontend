@@ -21,9 +21,6 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.className}`}>
-      <head>
-        <title>LifeDonors</title>
-      </head>
       <body className="relative">
         <NavBar />
         {children}

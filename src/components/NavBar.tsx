@@ -1,8 +1,9 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
-import SearchDialog from "./SearchDialog";
+const SearchDialog = dynamic(() => import("./SearchDialog"), { ssr: false });
 import LoginBtn from "./Login-btn";
 
 export default function NavBar() {

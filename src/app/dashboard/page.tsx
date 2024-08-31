@@ -42,14 +42,17 @@ const ApiResponseSchema = z.object({
 function DashboardPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [profile, setProfile] = useState<UserProfile[] | null>(null);
-  const authData = useUserStore((store) => store.userData);
   const [userRequests, setUserRequests] = useState<UserRequestsType[] | null>(
     null,
   );
-  const [isLoading, setIsLoading] = useState(false);
+  const authData = useUserStore((store) => store.userData);
+  const [isRequestsLoading, setIsRequestsLoading] = useState(false);
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
 
   async function getData() {
-    setIsLoading(true);
+    if (!authData) return;
+    setIsRequestsLoading(true);
+    setIsProfileLoading(true);
     const response_Dashboard = await fetch(
       `https://life-donors.onrender.com/users/dashboard/${authData?.userId}/`,
     );
@@ -59,14 +62,14 @@ function DashboardPage() {
     );
 
     if (response_Dashboard.ok) {
-      setIsLoading(false);
+      setIsRequestsLoading(false);
       const data: unknown = await response_Dashboard.json();
       const parsedData = ApiResponseSchema.parse(data);
       setUserRequests(parsedData.my_requests);
     }
 
     if (response_Profile.ok) {
-      setIsLoading(false);
+      setIsProfileLoading(false);
       const data: unknown = await response_Profile.json();
       const validatedData = UserProfileSchemaArray.parse(data);
       setProfile(validatedData);
@@ -75,7 +78,7 @@ function DashboardPage() {
 
   useEffect(() => {
     void getData();
-  }, []);
+  }, [authData]);
 
   return (
     <main className="min-h-[85dvh] w-full">
@@ -83,36 +86,34 @@ function DashboardPage() {
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 pb-8 md:grid-cols-2 lg:grid-cols-3">
         <Card className="max-w-lg p-4">
           <h2 className="py-2 text-lg font-semibold">My Requests</h2>
-          {userRequests ? (
-            userRequests.length > 0 ? (
-              <div className="divide space-y-3 divide-y divide-black/15">
-                {userRequests.map((item) => (
-                  <div key={item.id} className="py-2">
-                    <div className="flex items-center justify-between">
-                      <p>{item.date_of_donation}</p>
-                      <p>{item.blood_request_type}</p>
-                      <p>{item.blood_group}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>No requests are made yet.</p>
-            )
-          ) : (
+          {isRequestsLoading ? (
             <div className="flex w-full items-center justify-center py-8">
-              {isLoading ? (
-                <Loader2 className="animate-spin" size={20} />
-              ) : (
-                <p>No requests are made yet.</p>
-              )}
+              <Loader2 className="animate-spin" size={20} />
             </div>
+          ) : userRequests && userRequests?.length > 0 ? (
+            <div className="divide space-y-3 divide-y divide-black/15">
+              {userRequests?.map((item) => (
+                <div key={item.id} className="py-2">
+                  <div className="flex items-center justify-between">
+                    <p>{item.date_of_donation}</p>
+                    <p>{item.blood_request_type}</p>
+                    <p>{item.blood_group}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No requests are made yet.</p>
           )}
         </Card>
         <Card className="max-w-lg p-4">
           <h2 className="py-2 text-lg font-semibold">My Details</h2>
-          {profile ? (
-            profile.map((item, index) => (
+          {isProfileLoading ? (
+            <div className="flex w-full items-center justify-center py-8">
+              <Loader2 className="animate-spin" size={20} />
+            </div>
+          ) : profile ? (
+            profile?.map((item, index) => (
               <div key={index} className="divide divide-y divide-black/15">
                 <div className="flex items-center justify-between py-3">
                   <p>username</p>
@@ -133,9 +134,7 @@ function DashboardPage() {
               </div>
             ))
           ) : (
-            <div className="flex w-full items-center justify-center py-8">
-              <Loader2 className="animate-spin" size={20} />
-            </div>
+            <p>Data not found.</p>
           )}
         </Card>
         <div className="w-full">
@@ -158,3 +157,55 @@ export default function Page() {
     </Suspense>
   );
 }
+
+// {userRequests ? (
+//   userRequests.length > 0 ? (
+//     <div className="divide space-y-3 divide-y divide-black/15">
+//       {userRequests.map((item) => (
+//         <div key={item.id} className="py-2">
+//           <div className="flex items-center justify-between">
+//             <p>{item.date_of_donation}</p>
+//             <p>{item.blood_request_type}</p>
+//             <p>{item.blood_group}</p>
+//           </div>
+//         </div>
+//       ))}
+//     </div>
+//   ) : (
+//     <p>No requests are made yet.</p>
+//   )
+// ) : (
+//   <div className="flex w-full items-center justify-center py-8">
+//     {isLoading ? (
+//       <Loader2 className="animate-spin" size={20} />
+//     ) : (
+//       <p>No requests are made yet.</p>
+//     )}
+//   </div>
+// )}
+// {profile ? (
+//   profile.map((item, index) => (
+//     <div key={index} className="divide divide-y divide-black/15">
+//       <div className="flex items-center justify-between py-3">
+//         <p>username</p>
+//         <p>{item.user}</p>
+//       </div>
+//       <div className="flex items-center justify-between py-3">
+//         <p>blood group</p>
+//         <p>{item.blood_group}</p>
+//       </div>
+//       <div className="flex items-center justify-between py-3">
+//         <p>district</p>
+//         <p>{item.district ? item.district : "N/A"}</p>
+//       </div>
+//       <div className="flex items-center justify-between py-3">
+//         <p>available</p>
+//         <p>{item.is_available ? "yes" : "no"}</p>
+//       </div>
+//     </div>
+//   ))
+// ) : (
+//   <div className="flex w-full items-center justify-center py-8">
+//     <Loader2 className="animate-spin" size={20} />
+//   </div>
+// )}

@@ -10,8 +10,10 @@ function VerifyPage() {
         and verify your email address.
       </h2>
       <p>If you already verified your email, please log in here.</p>
-      <Link href={"/login"}>
-        <Button variant={"destructive"}>Log in</Button>
+      <Link href={"/login"} className="pt-6">
+        <Button variant={"destructive"} className="px-6">
+          Log in
+        </Button>
       </Link>
     </div>
   );

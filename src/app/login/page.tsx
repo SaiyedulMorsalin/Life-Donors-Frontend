@@ -71,11 +71,19 @@ function LoginPage() {
           description: "You are now logged in...!",
         });
 
-        router.push("/verify");
         const resData = (await response.json()) as LoginResponse;
         setUserData({
           token: resData.token,
           userId: resData.user_id,
+        });
+        router.push("/verify");
+      }
+
+      if (!response.ok) {
+        toast({
+          variant: "destructive",
+          title: "Invalid credentials",
+          description: "Please make sure credentials are correct.",
         });
       }
     } catch (error) {
@@ -83,8 +91,8 @@ function LoginPage() {
       if (error instanceof Error) {
         toast({
           variant: "destructive",
-          title: "Login successful",
-          description: "You are now logged in...! ${error.message}",
+          title: "Error happened",
+          description: `Error ${error.message}`,
         });
       }
     }

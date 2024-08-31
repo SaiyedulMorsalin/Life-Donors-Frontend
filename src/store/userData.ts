@@ -1,20 +1,20 @@
 import { create } from "zustand";
 
-interface UserData {
+type UserData = {
   token: string | null;
   userId: string | null;
-}
+};
 
-interface UserState {
+type UserState = {
   userData: UserData | null;
   setUser: (userData: UserData) => void;
   clearUser: () => void;
-}
+};
 
 const getInitialUserData = (): UserData | null => {
   if (typeof window !== "undefined") {
-    const token = sessionStorage.getItem("userToken");
-    const userId = sessionStorage.getItem("userId");
+    const token = localStorage.getItem("userToken");
+    const userId = localStorage.getItem("userId");
     return token && userId ? { token, userId } : null;
   }
   return null;
@@ -25,16 +25,16 @@ export const useUserStore = create<UserState>((set) => ({
 
   setUser: (userData: UserData) => {
     if (typeof window !== "undefined") {
-      sessionStorage.setItem("userToken", userData.token ?? "");
-      sessionStorage.setItem("userId", userData.userId ?? "");
+      localStorage.setItem("userToken", userData.token ?? "");
+      localStorage.setItem("userId", userData.userId ?? "");
     }
     set({ userData });
   },
 
   clearUser: () => {
     if (typeof window !== "undefined") {
-      sessionStorage.removeItem("userToken");
-      sessionStorage.removeItem("userId");
+      localStorage.removeItem("userToken");
+      localStorage.removeItem("userId");
     }
     set({ userData: null });
   },

@@ -126,7 +126,7 @@ function RegisterPage() {
         toast({
           variant: "destructive",
           title: "something went wrong",
-          description: "Error connecting with the server.",
+          description: "Username or Email is already taken.",
         });
       }
 

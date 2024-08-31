@@ -36,7 +36,7 @@ type UserRequestsType = z.infer<typeof RequestSchema>;
 
 const ApiResponseSchema = z.object({
   user_id: z.number(),
-  my_requests: z.array(RequestSchema),
+  my_requests: z.array(RequestSchema).nullable(),
 });
 
 function DashboardPage() {
@@ -46,8 +46,10 @@ function DashboardPage() {
   const [userRequests, setUserRequests] = useState<UserRequestsType[] | null>(
     null,
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   async function getData() {
+    setIsLoading(true);
     const response_Dashboard = await fetch(
       `https://life-donors.onrender.com/users/dashboard/${authData?.userId}/`,
     );
@@ -57,12 +59,14 @@ function DashboardPage() {
     );
 
     if (response_Dashboard.ok) {
+      setIsLoading(false);
       const data: unknown = await response_Dashboard.json();
       const parsedData = ApiResponseSchema.parse(data);
       setUserRequests(parsedData.my_requests);
     }
 
     if (response_Profile.ok) {
+      setIsLoading(false);
       const data: unknown = await response_Profile.json();
       const validatedData = UserProfileSchemaArray.parse(data);
       setProfile(validatedData);
@@ -97,7 +101,11 @@ function DashboardPage() {
             )
           ) : (
             <div className="flex w-full items-center justify-center py-8">
-              <Loader2 className="animate-spin" size={20} />
+              {isLoading ? (
+                <Loader2 className="animate-spin" size={20} />
+              ) : (
+                <p>No requests are made yet.</p>
+              )}
             </div>
           )}
         </Card>

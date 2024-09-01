@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import { MyFormField } from "@/components/MyFormField";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useUserStore } from "@/store/userData";
 import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 type LoginResponse = {
   token: string;
@@ -33,6 +34,7 @@ function LoginPage() {
   const { toast } = useToast();
   const userData = useUserStore((store) => store.userData);
   const setUserData = useUserStore((store) => store.setUser);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -51,6 +53,7 @@ function LoginPage() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
+      setIsLoading(true);
       const response = await fetch(
         "https://life-donors.onrender.com/users/login/",
         {
@@ -66,6 +69,7 @@ function LoginPage() {
       );
 
       if (response.ok) {
+        setIsLoading(false);
         toast({
           title: "Login successful",
           description: "You are now logged in...!",
@@ -80,6 +84,7 @@ function LoginPage() {
       }
 
       if (!response.ok) {
+        setIsLoading(false);
         toast({
           variant: "destructive",
           title: "Invalid credentials",
@@ -87,7 +92,7 @@ function LoginPage() {
         });
       }
     } catch (error) {
-      console.error(error);
+      setIsLoading(false);
       if (error instanceof Error) {
         toast({
           variant: "destructive",
@@ -137,7 +142,7 @@ function LoginPage() {
 
               <div className="flex w-full items-center justify-end">
                 <Button className="bg-destructive" type="submit">
-                  Submit
+                  {isLoading ? <Loader2 className="animate-spin" /> : "Submit"}
                 </Button>
               </div>
             </form>

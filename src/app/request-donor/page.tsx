@@ -35,14 +35,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { format } from "date-fns";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { districts } from "@/assets/constants";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useUserStore } from "@/store/userData";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
 
 const formSchema = z.object({
   blood_group: z
@@ -58,8 +60,7 @@ const formSchema = z.object({
   details: z.string().min(1, { message: "Details cannot be empty." }),
 });
 
-function getCurrentDateFormatted() {
-  const date = new Date();
+function getCurrentDateFormatted(date: Date) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   const year = date.getFullYear();
@@ -68,6 +69,7 @@ function getCurrentDateFormatted() {
 }
 
 function RequestDonor() {
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const { userData } = useUserStore();
   const { toast } = useToast();
   const router = useRouter();
@@ -82,7 +84,21 @@ function RequestDonor() {
     },
   });
 
+  useEffect(() => {
+    if (!userData) {
+      router.replace("/login");
+    }
+  }, [userData]);
+
   async function onSubmit(data: z.infer<typeof formSchema>) {
+    if (!date) {
+      return toast({
+        variant: "destructive",
+        title: "User is not authenticated",
+        description: `Please log in to do this operation`,
+      });
+    }
+
     if (!userData) {
       toast({
         title: "User is not authenticated",
@@ -91,29 +107,33 @@ function RequestDonor() {
       return router.push("/login");
     }
 
+    const formValues = {
+      user_id: parseInt(userData.userId!),
+      blood_group: data.blood_group,
+      blood_request_type: data.blood_request_type,
+      district: data.district,
+      date_of_donation: getCurrentDateFormatted(date),
+      gender: data.gender,
+      details: data.details,
+    };
+
+    console.log(formValues);
+
     const res = await fetch(
-      `https://life-donors.onrender.com/users/requests/?donor_id=${userData.userId}`,
+      `https://life-donors.onrender.com/users/create/request/`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          blood_group: data.blood_group,
-          blood_request_type: data.blood_request_type,
-          district: data.district,
-          date_of_donation: getCurrentDateFormatted(),
-          gender: data.gender,
-          details: data.details,
-          cancel: false,
-        }),
+        body: JSON.stringify(formValues),
       },
     );
 
     if (res.ok) {
       toast({
         title: "Request is created",
-        description: `Requested for a donor on ${getCurrentDateFormatted()}`,
+        description: `Requested for a donor on ${getCurrentDateFormatted(date)}`,
       });
       router.push("/dashboard");
     }
@@ -291,6 +311,32 @@ function RequestDonor() {
                 )}
               />
 
+              <div className="flex flex-col gap-3">
+                <FormLabel>Select a date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "flex-1 justify-start text-left font-normal",
+                        !date && "text-muted-foreground",
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={setDate}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
               <div className="flex items-end justify-end">
                 <Button variant={"destructive"} type="submit">
                   Submit
@@ -311,13 +357,3 @@ export default function Page() {
     </Suspense>
   );
 }
-
-// {
-//     "blood_group": null,
-//     "blood_request_type": null,
-//     "district": "",
-//     "date_of_donation": null,
-//     "gender": null,
-//     "details": "",
-//     "cancel": false
-// }

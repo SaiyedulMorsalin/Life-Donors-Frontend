@@ -49,7 +49,7 @@ export default function NavBar() {
               </SheetContent>
             </Sheet>
           </div>
-          <div className="hidden items-center justify-end gap-10 lg:flex">
+          <div className="hidden items-center justify-end gap-4 lg:flex">
             <SearchDialog />
             <Link href={"/"} className="transition-all hover:scale-105">
               <Button variant={"ghost"}>Home</Button>

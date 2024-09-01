@@ -95,7 +95,7 @@ function RequestDonor() {
       return toast({
         variant: "destructive",
         title: "User is not authenticated",
-        description: `Please log in to do this operation`,
+        description: `Please log in to do this operation `,
       });
     }
 

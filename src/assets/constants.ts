@@ -1,4 +1,5 @@
 export const districts = [
+    { value: "N/A", label: "N/A" },
     { value: "bagerhat", label: "Bagerhat" },
     { value: "bandarban", label: "Bandarban" },
     { value: "barguna", label: "Barguna" },

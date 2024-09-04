@@ -256,8 +256,8 @@ function RequestDonor() {
                           >
                             {field.value !== ""
                               ? districts.find(
-                                  (district) => district.value === field.value,
-                                )?.label
+                                (district) => district.value === field.value,
+                              )?.label
                               : "Select district"}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
@@ -340,7 +340,7 @@ function RequestDonor() {
 
               <div className="flex items-end justify-end">
                 <Button variant={"destructive"} type="submit">
-                  {isPending ? <Loader2 className="animate-spin" /> : "Submit"}
+                  {isPending ? <Loader2 className="animate-spin" /> : "Request"}
                 </Button>
               </div>
             </form>

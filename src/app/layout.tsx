@@ -4,6 +4,7 @@ import NavBar from "@/components/NavBar";
 import { type Metadata } from "next";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
+import QueryProvider from "@/provider/queryProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,10 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.className}`}>
       <body className="relative">
-        <NavBar />
-        {children}
-        <Footer />
-        <Toaster />
+        <QueryProvider>
+          <NavBar />
+          {children}
+          <Footer />
+          <Toaster />
+        </QueryProvider>
       </body>
     </html>
   );

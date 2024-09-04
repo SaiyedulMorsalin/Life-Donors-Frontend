@@ -1,38 +1,39 @@
+import CTA from "@/components/home/CTA";
+import Stats from "@/components/home/stats";
 import { Button } from "@/components/ui/button";
-import { HeartPulse, MapPin, UsersRound } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
 function HomePage() {
   return (
     <main>
-      <section className="h-[35rem] w-full bg-rose-50">
-        <div className="mx-auto flex h-full w-full max-w-7xl flex-col items-center justify-center gap-8">
-          <div className="w-[95%] space-y-2 text-center sm:w-[80%]">
-            <h1 className="text-balance text-3xl font-bold sm:text-5xl">
-              A Community-Driven Automated Platform to Connect, Donate, and Save
-              Lives
-            </h1>
-            <p className="text-balance">
-              LifeDonors is a free platform to help blood searchers or patients
-              connect voluntary blood donors around Bangladesh. Your Donation is
-              a Ray of Hope for Someone in Need.
-            </p>
-          </div>
+      <section className="hero_bg_img h-[80dvh] w-full">
+        <div className="h-full w-full bg-gradient-to-r from-rose-50 to-transparent">
+          <div className="mx-auto flex h-full w-full max-w-7xl flex-col items-start justify-center gap-8">
+            <div className="w-[95%] space-y-2 text-gray-800 sm:w-[80%]">
+              <h1 className="text-balance text-3xl font-bold sm:text-5xl">
+                A Community-Driven Automated Platform to Connect, Donate, and
+                Save Lives
+              </h1>
+              <p className="text-balance">
+                LifeDonors is a free platform to help blood searchers or
+                patients connect voluntary blood donors around Bangladesh. Your
+                Donation is a Ray of Hope for Someone in Need.
+              </p>
+            </div>
 
-          <div className="space-x-4">
-            <Link href={"/login"}>
-              <Button variant={"outline"}>Join as Donor</Button>
-            </Link>
+            <div className="space-x-4">
+              <CTA />
 
-            <Link href={"/request-donor"}>
-              <Button variant={"destructive"}>Request Donor</Button>
-            </Link>
+              <Link href={"/request-donor"}>
+                <Button variant={"destructive"}>Request Donor</Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="w-full space-y-8 py-20 md:h-[30rem] md:py-0">
+      <section className="flex min-h-[80dvh] w-full items-center justify-center space-y-8">
         <div className="mx-auto flex h-full w-full max-w-7xl flex-col items-center justify-center gap-8 px-2 text-center md:text-left xl:px-0">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-4">
             <div className="w-full">
@@ -67,29 +68,9 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="w-full space-y-10 bg-rose-50 py-20 md:py-32">
-        <div className="mx-auto flex h-full w-full max-w-7xl flex-col items-center justify-center gap-16 px-2 xl:px-0">
-          <h1 className="text-center text-4xl font-bold">
-            We&apos;re a network of
-          </h1>
-          <div className="grid w-full grid-cols-1 flex-col items-center justify-center gap-4 sm:grid-cols-2 md:grid-cols-3">
-            <div className="flex flex-col items-center justify-center gap-4 rounded-md border bg-rose-100 py-14">
-              <UsersRound size={30} color="red" />
-              <p className="text-2xl font-bold">462 Donors</p>
-            </div>
-            <div className="flex flex-col items-center justify-center gap-4 rounded-md border bg-rose-100 py-14">
-              <MapPin size={30} color="red" />
-              <p className="text-2xl font-bold">64 Districts</p>
-            </div>
-            <div className="flex flex-col items-center justify-center gap-4 rounded-md border bg-rose-100 py-14">
-              <HeartPulse size={30} color="red" />
-              <p className="text-2xl font-bold">8 Blood Groups</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Stats />
 
-      <section className="mx-auto h-[30rem] w-full max-w-7xl space-y-8">
+      <section className="mx-auto flex min-h-[80dvh] w-full max-w-7xl items-center justify-center space-y-8">
         <div className="flex h-full w-full flex-col items-center justify-center gap-4">
           <h1 className="text-balance text-4xl font-bold">About Us</h1>
           <p className="mx-auto w-[90%] text-balance text-center md:w-[50%]">

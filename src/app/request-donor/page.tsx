@@ -36,7 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { format } from "date-fns";
-import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { districts } from "@/assets/constants";
 import { Card } from "@/components/ui/card";
@@ -45,6 +45,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useUserStore } from "@/store/userData";
 import { Suspense, useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
+import { useRequestDonorMutation } from "@/query/requestDonor";
 
 const formSchema = z.object({
   blood_group: z
@@ -73,6 +74,8 @@ function RequestDonor() {
   const { userData } = useUserStore();
   const { toast } = useToast();
   const router = useRouter();
+  const { mutate, isSuccess, isPending, isError } = useRequestDonorMutation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -84,12 +87,6 @@ function RequestDonor() {
     },
   });
 
-  useEffect(() => {
-    if (!userData) {
-      router.replace("/login");
-    }
-  }, [userData]);
-
   async function onSubmit(data: z.infer<typeof formSchema>) {
     if (!date) {
       return toast({
@@ -99,13 +96,7 @@ function RequestDonor() {
       });
     }
 
-    if (!userData) {
-      toast({
-        title: "User is not authenticated",
-        description: `Please log in to do this operation`,
-      });
-      return router.push("/login");
-    }
+    if (!userData) return;
 
     const formValues = {
       user_id: parseInt(userData.userId!),
@@ -117,27 +108,33 @@ function RequestDonor() {
       details: data.details,
     };
 
-    console.log(formValues);
+    mutate({ data: formValues });
+  }
 
-    const res = await fetch(
-      `https://life-donors.onrender.com/users/create/request/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formValues),
-      },
-    );
+  useEffect(() => {
+    if (!userData) {
+      router.replace("/login");
+    }
+  }, [userData]);
 
-    if (res.ok) {
+  useEffect(() => {
+    if (isSuccess) {
       toast({
         title: "Request is created",
-        description: `Requested for a donor on ${getCurrentDateFormatted(date)}`,
+        description: `Requested for a donor on ${getCurrentDateFormatted(date!)}`,
       });
+
       router.push("/dashboard");
     }
-  }
+
+    if (isError) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: `Couldn't create the request.`,
+      });
+    }
+  }, [isSuccess, isError]);
 
   return (
     <main className="min-h-[85dvh]">
@@ -227,8 +224,12 @@ function RequestDonor() {
                         <SelectGroup>
                           <SelectLabel>Select</SelectLabel>
                           <SelectItem value="Pending">Pending</SelectItem>
-                          <SelectItem value="Running">Running</SelectItem>
-                          <SelectItem value="Completed">Completed</SelectItem>
+                          <SelectItem disabled={true} value="Running">
+                            Running
+                          </SelectItem>
+                          <SelectItem disabled={true} value="Completed">
+                            Completed
+                          </SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -339,7 +340,7 @@ function RequestDonor() {
 
               <div className="flex items-end justify-end">
                 <Button variant={"destructive"} type="submit">
-                  Submit
+                  {isPending ? <Loader2 className="animate-spin" /> : "Submit"}
                 </Button>
               </div>
             </form>

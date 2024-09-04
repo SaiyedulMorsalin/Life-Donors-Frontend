@@ -104,7 +104,7 @@ function HomePage() {
       <section className="w-full bg-cover bg-center py-16 md:py-24 lg:py-32">
         <div className="container mx-auto max-w-3xl px-4 text-center">
           <div className="space-y-6">
-            <h2 className="text-3xl font-bold tracking-tight text-primary-foreground md:text-4xl lg:text-5xl">
+            <h2 className="text-3xl font-bold tracking-tight text-rose-700 md:text-4xl lg:text-5xl">
               Our Mission: Saving Lives Through Blood Donation
             </h2>
             <p className="text-muted-foreground md:text-xl lg:text-lg">

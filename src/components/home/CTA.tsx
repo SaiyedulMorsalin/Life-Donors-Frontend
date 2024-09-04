@@ -8,11 +8,15 @@ export default function CTA() {
   const userData = useUserStore((state) => state.userData);
   return userData ? (
     <Link href={"/donate"}>
-      <Button variant={"outline"}>Donate Now</Button>
+      <Button variant={"outline"} className="px-6 py-6">
+        Donate Now
+      </Button>
     </Link>
   ) : (
     <Link href={"/register"}>
-      <Button variant={"outline"}>Join as Donor</Button>
+      <Button variant={"outline"} className="px-6 py-6">
+        Join as Donor
+      </Button>
     </Link>
   );
 }

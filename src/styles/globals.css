@@ -67,9 +67,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-.hero_bg_img {
-  background-image: url("../assets/images/hero-bg.webp");
-  background-size: cover;
-  background-position: center;
-}

@@ -12,8 +12,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "LifeDonors",
-  description: "Give red love save red lives",
+  title: "LifeDonors - Donate blood, Save lives",
+  description: "Give red love - save red lives",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 

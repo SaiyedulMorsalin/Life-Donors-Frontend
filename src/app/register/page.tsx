@@ -114,7 +114,7 @@ function RegisterPage() {
       });
     }
 
-    if (isSuccess) {
+    if (isSuccess && !isError) {
       toast({
         title: "Congrats 🎉🎉",
         description: "Please check your email for verification link.",
@@ -131,11 +131,11 @@ function RegisterPage() {
   return (
     <main className="min-h-[90dvh] w-full">
       <div className="mx-auto flex min-h-[90dvh] max-w-7xl flex-col items-center justify-center px-2 py-4 xl:px-0">
-        <h2 className="py-8 text-center text-2xl font-semibold">
+        <h2 className="py-8 text-center text-3xl font-bold text-rose-500">
           Let&apos;s Save A Life today
         </h2>
         <Card className="grid grid-cols-5 gap-6 px-4 py-6">
-          <div className="pointer-events-none col-span-2 flex items-center justify-center rounded-md bg-gray-950/5">
+          <div className="pointer-events-none col-span-2 hidden items-center justify-center rounded-md bg-gray-950/5 md:flex">
             <Image
               alt=""
               src={RegisterImage}
@@ -143,7 +143,7 @@ function RegisterPage() {
               className="pointer-events-none"
             />
           </div>
-          <div className="col-span-3 px-4">
+          <div className="col-span-5 px-4 md:col-span-3">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -270,7 +270,7 @@ function RegisterPage() {
                     {isPending ? (
                       <Loader2 className="animate-spin" />
                     ) : (
-                      "Register"
+                      "Submit"
                     )}
                   </Button>
                 </div>

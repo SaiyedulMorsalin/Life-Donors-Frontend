@@ -8,9 +8,11 @@ const BloodDonorSchema = z.object({
   date_of_donation: z.string().nullable(),
   gender: z.string(),
   is_available: z.boolean(),
+  mobile_number: z.string().nullable(),
+  email: z.string().nullable(),
 });
 
-const BloodDonorArraySchema = z.array(BloodDonorSchema);
+export const BloodDonorArraySchema = z.array(BloodDonorSchema);
 export type BloodDonor = z.infer<typeof BloodDonorSchema>;
 
 export function useSearchDonorQuery() {
@@ -26,7 +28,7 @@ export function useSearchDonorQuery() {
         return parsedData;
       }
     },
-    refetchInterval: 3500,
+    refetchInterval: 5000,
   });
 
   return { ...query };

@@ -34,7 +34,7 @@ export function useAvailableRequestsQuery(userId: string | undefined) {
       const data: unknown = await response.json();
       return DonationRequestsSchema.parse(data);
     },
-    refetchInterval: 3500,
+    refetchInterval: 5000,
     enabled: !!userId,
   });
 }

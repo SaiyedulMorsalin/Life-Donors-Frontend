@@ -1,6 +1,11 @@
 "use client";
 
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "./ui/button";
 import { Search, UserRound } from "lucide-react";
@@ -120,12 +125,13 @@ export default function SearchDialog() {
           <Search size={25} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-md h-auto p-6">
-        <div className="mx-auto flex w-full flex-col items-center justify-center gap-4 px-2 xl:px-0">
+      <DialogContent className="h-auto w-[96%] max-w-lg rounded-md p-6">
+        <DialogTitle>Search for donors</DialogTitle>
+        <div className="mx-auto flex w-full flex-col items-center justify-center gap-4">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="mx-auto flex w-full flex-col items-start justify-center gap-4 px-2 py-4 xl:px-0"
+              className="mx-auto flex w-full flex-col items-start justify-center gap-4 py-4"
             >
               <div className="flex w-full items-start justify-between gap-4">
                 <FormField

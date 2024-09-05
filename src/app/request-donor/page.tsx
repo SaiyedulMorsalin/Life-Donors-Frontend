@@ -46,6 +46,7 @@ import { useUserStore } from "@/store/userData";
 import { Suspense, useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { useRequestDonorMutation } from "@/query/requestDonor";
+import { useProfileDetailsQuery } from "@/query/profile";
 
 const formSchema = z.object({
   blood_group: z
@@ -61,6 +62,12 @@ const formSchema = z.object({
   details: z.string().min(1, { message: "Details cannot be empty." }),
 });
 
+function getRandomNote(note: string) {
+  const randomId = crypto.randomUUID();
+
+  return `${randomId} ${note}`;
+}
+
 function getCurrentDateFormatted(date: Date) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
@@ -75,6 +82,9 @@ function RequestDonor() {
   const { toast } = useToast();
   const router = useRouter();
   const { mutate, isSuccess, isPending, isError } = useRequestDonorMutation();
+  const { data: profileData } = useProfileDetailsQuery(
+    userData ? parseInt(userData.userId!) : undefined,
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,6 +96,20 @@ function RequestDonor() {
       gender: "",
     },
   });
+
+  useEffect(() => {
+    if (!profileData) return;
+
+    const info = profileData[0]!;
+
+    if (
+      info.date_of_donation === null ||
+      info.gender === "" ||
+      info.district === ""
+    ) {
+      router.push("/profile");
+    }
+  }, [profileData]);
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     if (!date) {
@@ -105,7 +129,7 @@ function RequestDonor() {
       district: data.district,
       date_of_donation: getCurrentDateFormatted(date),
       gender: data.gender,
-      details: data.details,
+      details: getRandomNote(data.details),
     };
 
     mutate({ data: formValues });
@@ -138,8 +162,8 @@ function RequestDonor() {
 
   return (
     <main className="min-h-[85dvh]">
-      <div className="mx-auto max-w-7xl py-4">
-        <h2 className="py-8 text-center text-3xl font-bold">
+      <div className="mx-auto max-w-7xl px-2 py-8 xl:px-0">
+        <h2 className="py-8 text-center text-3xl font-bold text-rose-500">
           Request for Donation
         </h2>
         <Card className="mx-auto max-w-md p-4">
@@ -256,8 +280,8 @@ function RequestDonor() {
                           >
                             {field.value !== ""
                               ? districts.find(
-                                (district) => district.value === field.value,
-                              )?.label
+                                  (district) => district.value === field.value,
+                                )?.label
                               : "Select district"}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
@@ -313,7 +337,7 @@ function RequestDonor() {
               />
 
               <div className="flex flex-col gap-3">
-                <FormLabel>Select a date</FormLabel>
+                <FormLabel>Select donation date</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -340,7 +364,7 @@ function RequestDonor() {
 
               <div className="flex items-end justify-end">
                 <Button variant={"destructive"} type="submit">
-                  {isPending ? <Loader2 className="animate-spin" /> : "Request"}
+                  {isPending ? <Loader2 className="animate-spin" /> : "Submit"}
                 </Button>
               </div>
             </form>

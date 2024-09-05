@@ -8,6 +8,8 @@ const userProfileSchema = z.object({
   date_of_donation: z.string().nullable(),
   gender: z.string(),
   is_available: z.boolean(),
+  mobile_number: z.string().nullable(),
+  email: z.string().nullable(),
 });
 
 const apiResponseSchema = z.array(userProfileSchema);
@@ -26,7 +28,7 @@ export function useProfileDetailsQuery(id: number | undefined) {
       return validatedData;
     },
     enabled: !!id,
-    refetchInterval: 3500,
+    refetchInterval: 5000,
   });
 
   return { ...query };

@@ -41,18 +41,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useSearchParams } from "next/navigation";
-
-const BloodDonorSchema = z.object({
-  user: z.string(),
-  blood_group: z.string(),
-  district: z.string(),
-  date_of_donation: z.string().nullable(),
-  gender: z.string(),
-  is_available: z.boolean(),
-});
-
-const BloodDonorArraySchema = z.array(BloodDonorSchema);
-type BloodDonor = z.infer<typeof BloodDonorSchema>;
+import { type BloodDonor, BloodDonorArraySchema } from "@/query/searchDonor";
 
 const FormSchema = z.object({
   district: z
@@ -112,13 +101,13 @@ export default function Search({ updateSearchDonors }: Props) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto flex w-full max-w-7xl items-start justify-center gap-4 px-2 py-8 xl:px-0"
+        className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-4 px-2 py-8 sm:flex-row lg:px-4 xl:px-0"
       >
         <FormField
           control={form.control}
           name="group"
           render={({ field }) => (
-            <FormItem className="flex-1">
+            <FormItem className="w-full sm:flex-1">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full">
@@ -148,7 +137,7 @@ export default function Search({ updateSearchDonors }: Props) {
           control={form.control}
           name="district"
           render={({ field }) => (
-            <FormItem className="flex flex-1 flex-col">
+            <FormItem className="w-full sm:flex-1">
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -156,7 +145,7 @@ export default function Search({ updateSearchDonors }: Props) {
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "justify-between",
+                        "w-full justify-between",
                         !field.value && "text-muted-foreground",
                       )}
                     >
@@ -169,7 +158,7 @@ export default function Search({ updateSearchDonors }: Props) {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
+                <PopoverContent className="w-full p-0 sm:w-[200px]">
                   <Command>
                     <CommandInput placeholder="Search district..." />
                     <CommandList>
@@ -207,9 +196,9 @@ export default function Search({ updateSearchDonors }: Props) {
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant={"outline"}
+              variant="outline"
               className={cn(
-                "flex-1 justify-start text-left font-normal",
+                "w-full justify-start text-left font-normal sm:flex-1",
                 !date && "text-muted-foreground",
               )}
             >
@@ -217,7 +206,7 @@ export default function Search({ updateSearchDonors }: Props) {
               {date ? format(date, "PPP") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
+          <PopoverContent className="w-full p-0 sm:w-auto">
             <Calendar
               mode="single"
               selected={date}
@@ -226,7 +215,12 @@ export default function Search({ updateSearchDonors }: Props) {
             />
           </PopoverContent>
         </Popover>
-        <Button type="submit" variant={"destructive"} className="px-8">
+
+        <Button
+          type="submit"
+          variant="destructive"
+          className="w-full px-8 sm:w-auto"
+        >
           Search Donor
         </Button>
       </form>

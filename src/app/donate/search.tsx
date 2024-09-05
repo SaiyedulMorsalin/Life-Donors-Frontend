@@ -98,13 +98,13 @@ export default function Search({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto flex w-full max-w-7xl items-start justify-center gap-4 px-2 xl:px-0"
+        className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-4 md:flex-row"
       >
         <FormField
           control={form.control}
           name="group"
           render={({ field }) => (
-            <FormItem className="flex-1">
+            <FormItem className="w-full md:flex-1">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full">
@@ -134,7 +134,7 @@ export default function Search({
           control={form.control}
           name="district"
           render={({ field }) => (
-            <FormItem className="flex flex-1 flex-col">
+            <FormItem className="w-full md:flex-1">
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -142,7 +142,7 @@ export default function Search({
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "justify-between",
+                        "w-full justify-between",
                         !field.value && "text-muted-foreground",
                       )}
                     >
@@ -193,7 +193,7 @@ export default function Search({
         <Button
           type="submit"
           variant={"destructive"}
-          className="flex items-center justify-center gap-2 px-8"
+          className="flex w-full items-center justify-center gap-2 px-8 md:w-auto"
         >
           {isSearchLoading ? (
             <>

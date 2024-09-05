@@ -87,14 +87,21 @@ function ProfilePage() {
   const { toast } = useToast();
   const userData = useUserStore((state) => state.userData);
   const [open, setOpen] = useState(false);
-  const [requestDate, setRequestDate] = useState<Date | undefined>(undefined);
+  const [requestDate, setRequestDate] = useState<Date | undefined>(() => {
+    const today = new Date();
+    return isNaN(today.getTime()) ? undefined : today;
+  });
   const { data, isLoading, isError, error } = useProfileDetailsQuery(
     userData ? parseInt(userData.userId!) : undefined,
   );
   const { data: dashboardData } = useDashboardQuery({
     authData: userData ? userData : undefined,
   });
-  const { mutate: updateProfile, isPending } = useUpdateProfileMutation();
+  const {
+    mutate: updateProfile,
+    isPending,
+    isSuccess,
+  } = useUpdateProfileMutation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -102,6 +109,10 @@ function ProfilePage() {
       gender: "",
     },
   });
+
+  useEffect(() => {
+    setOpen(false);
+  }, [isSuccess]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!requestDate) {
@@ -120,13 +131,14 @@ function ProfilePage() {
       });
     }
 
-    setOpen(false);
     updateProfile({
       id: userData.userId!,
       district: values.district,
       gender: values.gender,
       lastDonation: getCurrentDateFormatted(requestDate),
     });
+
+    setOpen(false);
   }
 
   useEffect(() => {
@@ -135,14 +147,30 @@ function ProfilePage() {
     }
   }, [userData]);
 
+  useEffect(() => {
+    if (!data) return;
+
+    const info = data[0]!;
+
+    if (
+      info.date_of_donation === null ||
+      info.gender === "" ||
+      info.district === ""
+    ) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [data]);
+
   if (isError) {
     return <div>Error: {error.message}</div>;
   }
 
   return (
-    <div className="min-h-[85dvh]">
+    <div className="min-h-[85dvh] overflow-x-hidden">
       <div className="mx-auto max-w-7xl px-2 xl:px-0">
-        <h2 className="mx-auto max-w-7xl py-8 text-center text-3xl font-bold">
+        <h2 className="mx-auto max-w-7xl py-10 text-4xl font-bold text-rose-500">
           My Profile
         </h2>
         <div className="grid grid-cols-1 flex-col items-center justify-center gap-8 md:grid-cols-2">
@@ -182,37 +210,14 @@ function ProfilePage() {
                   key={index}
                   className="w-full rounded-lg bg-white p-6 shadow-lg"
                 >
-                  <h3 className="pb-4 text-xl font-bold">Basic information</h3>
-                  <div className="space-y-4">
-                    {[
-                      { label: "Username", value: profile.user },
-                      { label: "Blood Group", value: profile.blood_group },
-                      { label: "District", value: profile.district || "N/A" },
-                      {
-                        label: "Last Donation",
-                        value: profile.date_of_donation ?? "N/A",
-                      },
-                      { label: "Gender", value: profile.gender || "N/A" },
-                      {
-                        label: "Available",
-                        value: profile.is_available ? "Yes" : "No",
-                      },
-                    ].map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center justify-between border-b py-2 last:border-none"
-                      >
-                        <p className="font-medium text-gray-600">
-                          {item.label}
-                        </p>
-                        <p className="font-semibold text-gray-800">
-                          {item.value}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex justify-end pt-6">
-                    <Dialog open={open} onOpenChange={setOpen}>
+                  <div className="flex w-full items-center justify-between pb-4">
+                    <h3 className="pb-4 text-xl font-bold text-rose-500">
+                      Basic information
+                    </h3>
+                    <Dialog
+                      open={open}
+                      onOpenChange={(isOpen) => setOpen(isOpen)}
+                    >
                       <DialogTrigger asChild>
                         <Button
                           variant="destructive"
@@ -231,9 +236,9 @@ function ProfilePage() {
                           )}
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="max-w-lg p-6">
+                      <DialogContent className="w-[95%] max-w-lg rounded-md p-6">
                         <DialogHeader>
-                          <DialogTitle className="text-xl font-bold">
+                          <DialogTitle className="text-xl font-bold text-rose-500">
                             Update your profile to make donations
                           </DialogTitle>
                         </DialogHeader>
@@ -273,30 +278,7 @@ function ProfilePage() {
                                 </FormItem>
                               )}
                             />
-                            <div>
-                              <FormLabel>Select a date</FormLabel>
-                              <Popover>
-                                <PopoverTrigger asChild>
-                                  <Button
-                                    variant="outline"
-                                    className="mt-1 w-full justify-start text-left"
-                                  >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {requestDate
-                                      ? format(requestDate, "PPP")
-                                      : "Pick a date"}
-                                  </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0">
-                                  <Calendar
-                                    mode="single"
-                                    selected={requestDate}
-                                    onSelect={setRequestDate}
-                                    initialFocus
-                                  />
-                                </PopoverContent>
-                              </Popover>
-                            </div>
+
                             <FormField
                               control={form.control}
                               name="district"
@@ -359,6 +341,40 @@ function ProfilePage() {
                                 </FormItem>
                               )}
                             />
+
+                            <div>
+                              <FormLabel>Last donation</FormLabel>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className={cn(
+                                      "mt-1 w-full justify-start text-left font-normal",
+                                      !requestDate && "text-muted-foreground",
+                                    )}
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {requestDate
+                                      ? format(requestDate, "PPP")
+                                      : "Pick a date"}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent
+                                  className="w-auto p-0"
+                                  align="start"
+                                >
+                                  <Calendar
+                                    mode="single"
+                                    selected={requestDate}
+                                    onSelect={(date) => {
+                                      setRequestDate(date);
+                                      console.log("Selected date:", date); // Debugging line
+                                    }}
+                                    initialFocus
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                            </div>
                             <Button
                               type="submit"
                               variant={"destructive"}
@@ -370,6 +386,39 @@ function ProfilePage() {
                         </Form>
                       </DialogContent>
                     </Dialog>
+                  </div>
+                  <div className="space-y-4">
+                    {[
+                      { label: "Username", value: profile.user },
+                      { label: "Blood Group", value: profile.blood_group },
+                      { label: "District", value: profile.district ?? "N/A" },
+                      {
+                        label: "Last Donation",
+                        value: profile.date_of_donation ?? "N/A",
+                      },
+                      { label: "Gender", value: profile.gender ?? "N/A" },
+                      {
+                        label: "Available",
+                        value: profile.is_available ? "Yes" : "No",
+                      },
+                      { label: "Email", value: profile.email ?? "N/A" },
+                      {
+                        label: "Mobile",
+                        value: profile.mobile_number ?? "N/A",
+                      },
+                    ].map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between border-b py-2 last:border-none"
+                      >
+                        <p className="font-medium text-gray-600">
+                          {item.label}
+                        </p>
+                        <p className="font-semibold text-gray-800">
+                          {item.value}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </Card>
               ))

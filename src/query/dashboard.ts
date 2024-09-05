@@ -49,7 +49,7 @@ export function useDashboardQuery({
         return parsedData;
       }
     },
-    refetchInterval: 3500,
+    refetchInterval: 5000,
     enabled: !!authData,
   });
 

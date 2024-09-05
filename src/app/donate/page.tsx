@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 const Search = dynamic(() => import("./search"), { ssr: false });
 import { Button } from "@/components/ui/button";
+import { useProfileDetailsQuery } from "@/query/profile";
 
 export default function Donate() {
   const userData = useUserStore((state) => state.userData);
@@ -24,10 +25,28 @@ export default function Donate() {
   const [searchRequestArray, setSearchRequestArray] = useState<
     RequestType[] | null
   >(null);
+  const { data: profileData } = useProfileDetailsQuery(
+    userData ? parseInt(userData.userId!) : undefined,
+  );
 
   function updateSearchRequests({ data }: { data: RequestType[] }) {
     setSearchRequestArray(data);
   }
+
+  useEffect(() => {
+    if (!isMounted) return;
+    if (!profileData) return;
+
+    const info = profileData[0]!;
+
+    if (
+      info.date_of_donation === null ||
+      info.gender === "" ||
+      info.district === ""
+    ) {
+      router.push("/profile");
+    }
+  }, [profileData, isMounted]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -42,6 +61,10 @@ export default function Donate() {
         <div className="flex h-full items-center justify-center py-8">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
+      );
+    } else if (searchRequestArray !== null && searchRequestArray.length === 0) {
+      return (
+        <p className="text-center text-gray-500">No search results found.</p>
       );
     } else if (searchRequestArray && searchRequestArray.length > 0) {
       return (
@@ -77,11 +100,11 @@ export default function Donate() {
           />
         </div>
       </div>
-      <div className="mx-auto h-full w-full max-w-7xl space-y-4 px-2 xl:px-0">
+      <div className="mx-auto h-full w-full max-w-7xl space-y-4 px-2 pt-4 xl:px-0">
         <Button variant={"outline"} onClick={() => setSearchRequestArray(null)}>
           Reset
         </Button>
-        <p className="bg-destructive px-8 py-4 font-semibold text-white">
+        <p className="bg-destructive px-8 py-3 font-semibold text-white lg:py-4">
           {searchRequestArray
             ? `${searchRequestArray.length} requests found`
             : data

@@ -47,7 +47,9 @@ export default function RequestCard({ item }: Props) {
           {item.blood_request_type}
         </span>
       </div>
-      <p className="text-gray-600">{item.details}</p>
+      <p className="text-gray-600">
+        {item.details.split(" ").slice(1).join(" ")}
+      </p>
       <p className="text-gray-500">
         <strong>District:</strong> {item.district}
       </p>
@@ -56,9 +58,6 @@ export default function RequestCard({ item }: Props) {
       </p>
       <p className="text-gray-500">
         <strong>Gender:</strong> {item.gender}
-      </p>
-      <p className="text-gray-500">
-        <strong>Accepted Donor ID:</strong> {item.accepted_donor_id ?? "N/A"}
       </p>
       <Button
         onClick={handleClick}

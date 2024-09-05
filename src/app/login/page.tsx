@@ -111,7 +111,7 @@ function LoginPage() {
                     {isPending ? (
                       <Loader2 className="animate-spin" />
                     ) : (
-                      "Login"
+                      "Submit"
                     )}
                   </Button>
                 </div>

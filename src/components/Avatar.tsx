@@ -115,7 +115,10 @@ export default function Avatar() {
     </Popover>
   ) : (
     <>
-      <Link href={"/register"} className="transition-all hover:scale-105">
+      <Link
+        href={"/register"}
+        className="hidden transition-all hover:scale-105 md:block"
+      >
         <Button variant={"ghost"}>Register</Button>
       </Link>
       <Link href={"/login"} className="transition-all hover:scale-105">

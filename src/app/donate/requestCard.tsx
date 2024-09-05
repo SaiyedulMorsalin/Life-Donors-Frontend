@@ -36,28 +36,29 @@ export default function RequestCard({ item }: Props) {
           {item.blood_group}
         </h3>
         <span
-          className={`rounded px-2 py-1 text-sm ${
-            item.blood_request_type === "Pending"
-              ? "bg-yellow-100 text-yellow-800"
-              : item.blood_request_type === "Running"
-                ? "bg-blue-100 text-blue-800"
-                : "bg-green-100 text-green-800"
-          }`}
+          className={`rounded px-2 py-1 text-sm ${item.blood_request_type === "Pending"
+            ? "bg-yellow-100 text-yellow-800"
+            : item.blood_request_type === "Running"
+              ? "bg-blue-100 text-blue-800"
+              : "bg-green-100 text-green-800"
+            }`}
         >
           {item.blood_request_type}
         </span>
       </div>
-      <p className="text-gray-600">
-        {item.details.split(" ").slice(1).join(" ")}
-      </p>
-      <p className="text-gray-500">
-        <strong>District:</strong> {item.district}
-      </p>
+
       <p className="text-gray-500">
         <strong>Request by:</strong> {item.donor.split(" ")[0]}
       </p>
       <p className="text-gray-500">
         <strong>Gender:</strong> {item.gender}
+      </p>
+
+      <p className="text-gray-500">
+        <strong>District:</strong> {item.district}
+      </p>
+      <p className="text-gray-600">
+        <strong>Details:</strong> {item.details.split(" ").slice(1).join(" ")}
       </p>
       <Button
         onClick={handleClick}

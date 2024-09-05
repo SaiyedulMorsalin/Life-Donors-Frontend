@@ -20,10 +20,11 @@ export default function DonorDetailsPopup({ donor_id, status }: Props) {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          disabled={status !== "Pending" ? false : true}
+          disabled={status === "Pending"}
           variant={status === "Pending" ? "ghost" : "outline"}
         >
-          {status !== "Pending" ? "Details" : "No donor"}
+          {status === "Pending" ? "No donor" : "Details"}
+          {console.log(data)}
         </Button>
       </PopoverTrigger>
       <PopoverContent>

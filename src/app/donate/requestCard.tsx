@@ -57,8 +57,9 @@ export default function RequestCard({ item }: Props) {
       <p className="text-gray-500">
         <strong>District:</strong> {item.district}
       </p>
-      <p className="text-gray-600">
-        <strong>Details:</strong> {item.details.split(" ").slice(1).join(" ")}
+      <p className="text-gray-600 cursor-pointer"
+        title={item.details ? item.details.split(" ").slice(1).join(" ") : "N/A"}>
+        <strong>Details:</strong> {item.details.split(" ").slice(1).join(" ").slice(0, 70) + (item.details.length > 30 ? "  ..." : "")}
       </p>
       <Button
         onClick={handleClick}

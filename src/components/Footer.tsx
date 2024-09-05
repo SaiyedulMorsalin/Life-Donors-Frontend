@@ -4,7 +4,7 @@ export default function Footer() {
       Copyright © LifeDonors 2024 - Present{" "}
       <span className="hidden md:inline-block">|</span>{" "}
       <br className="sm:hidden" />
-      Made with ❤️ by TOPU
+      SaiyedulM.
     </footer>
   );
 }

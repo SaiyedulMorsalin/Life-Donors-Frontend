@@ -270,7 +270,7 @@ function RegisterPage() {
                     {isPending ? (
                       <Loader2 className="animate-spin" />
                     ) : (
-                      "Submit"
+                      "Register"
                     )}
                   </Button>
                 </div>

@@ -52,7 +52,7 @@ function SearchDonorsPage() {
                   {item.user}
                 </p>
               </div>
-              <div className="flex items-start justify-between">
+              <div className="flex  justify-between items-center">
                 <p className="w-[30%] font-medium text-gray-700">Blood Group</p>
                 <p className="flex-1 pl-2 font-semibold text-gray-800">
                   {item.blood_group}
@@ -80,10 +80,14 @@ function SearchDonorsPage() {
               </div>
               <div className="flex items-start justify-between">
                 <p className="w-[30%] font-medium text-gray-700">Email</p>
-                <p className="flex-1 pl-2 font-semibold text-gray-800">
-                  {item.email ? item.email : "N/A"}
+                <p
+                  className="flex-1 pl-2 font-semibold text-gray-800 overflow-hidden text-ellipsis whitespace-nowrap"
+                  title={item.email ? item.email : "N/A"} // Tooltip for hover
+                >
+                  {item.email ? item.email.slice(0, 10) + (item.email.length > 10 ? "..." : "") : "N/A"}
                 </p>
               </div>
+
               <div className="flex items-start justify-between">
                 <p className="w-[30%] font-medium text-gray-700">Mobile</p>
                 <p className="flex-1 pl-2 font-semibold text-gray-800">
@@ -134,16 +138,21 @@ function SearchDonorsPage() {
                 {item.is_available ? "Available" : "Not Available"}
               </p>
             </div>
-            <div className="flex items-start justify-between py-2">
+            <div className="flex items-start justify-between cursor-pointer">
               <p className="font-medium text-gray-700">Email</p>
-              <p className="pl-2 font-semibold text-gray-800">
-                {item.email ? item.email : "N/A"}
+              <p
+                className="pl-2 font-semibold text-gray-800"
+                title={item.email ? item.email : "N/A"} // Tooltip for hover
+              >
+                {item.email ? item.email.slice(0, 10) + (item.email.length > 10 ? "..." : "") : "N/A"}
               </p>
             </div>
-            <div className="flex items-start justify-between py-2">
+            <div className="flex items-start justify-between py-2 cursor-pointer">
               <p className="font-medium text-gray-700">Mobile</p>
-              <p className="pl-2 font-semibold text-gray-800">
-                {item.mobile_number ? item.mobile_number : "N/A"}
+              <p className="pl-2 font-semibold text-gray-800"
+                title={item.mobile_number ? item.mobile_number : "N/A"}>
+
+                {item.mobile_number ? item.mobile_number.slice(0, 7) + (item.mobile_number.length > 7 ? "-..." : "") : "N/A"}
               </p>
             </div>
           </div>

@@ -84,7 +84,7 @@ function LoginPage() {
                   control={form.control}
                   label="Username"
                   name="userName"
-                  placeholder="example@example.com"
+                  placeholder="@_example_username"
                   type="userName"
                 />
 
@@ -111,7 +111,7 @@ function LoginPage() {
                     {isPending ? (
                       <Loader2 className="animate-spin" />
                     ) : (
-                      "Submit"
+                      "Login"
                     )}
                   </Button>
                 </div>

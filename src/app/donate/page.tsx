@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import {
-  type RequestType,
+  type BloodRequestSchema,
   useAvailableRequestsQuery,
 } from "@/query/availableRequests";
 import { Loader2 } from "lucide-react";
@@ -13,6 +13,9 @@ import { useEffect, useState } from "react";
 const Search = dynamic(() => import("./search"), { ssr: false });
 import { Button } from "@/components/ui/button";
 import { useProfileDetailsQuery } from "@/query/profile";
+import type { z } from "zod";
+
+type RequestType = z.infer<typeof BloodRequestSchema>;
 
 export default function Donate() {
   const userData = useUserStore((state) => state.userData);
@@ -37,12 +40,10 @@ export default function Donate() {
     if (!isMounted) return;
     if (!profileData) return;
 
-    const info = profileData[0]!;
-
     if (
-      info.date_of_donation === null ||
-      info.gender === "" ||
-      info.district === ""
+      profileData.date_of_donation === null ||
+      profileData.gender === "" ||
+      profileData.district === ""
     ) {
       router.push("/profile");
     }
@@ -90,8 +91,8 @@ export default function Donate() {
   }
 
   return (
-    <main className="min-h-[85dvh] bg-white">
-      <div className="w-full bg-red-50 py-8">
+    <main className="min-h-[85dvh] overflow-hidden bg-gray-100">
+      <div className="w-full bg-red-100 py-8">
         <div className="mx-auto max-w-7xl px-2 xl:px-0">
           <Search
             setterFn={updateSearchRequests}
@@ -100,7 +101,7 @@ export default function Donate() {
           />
         </div>
       </div>
-      <div className="mx-auto h-full w-full max-w-7xl space-y-4 px-2 pt-4 xl:px-0">
+      <div className="mx-auto h-full w-full max-w-7xl space-y-4 px-2 py-4 xl:px-0">
         <Button variant={"outline"} onClick={() => setSearchRequestArray(null)}>
           Reset
         </Button>

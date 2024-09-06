@@ -1,19 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 
-const BloodDonorSchema = z.object({
-  user: z.string(),
+const UserSchema = z.object({
+  username: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
+  is_active: z.boolean(),
+});
+
+const DonorSchema = z.object({
+  id: z.number(),
+  user: UserSchema,
   blood_group: z.string(),
   district: z.string(),
   date_of_donation: z.string().nullable(),
   gender: z.string(),
   is_available: z.boolean(),
-  mobile_number: z.string().nullable(),
-  email: z.string().nullable(),
+  mobile_number: z.string(),
+  email: z.string(),
 });
 
-export const BloodDonorArraySchema = z.array(BloodDonorSchema);
-export type BloodDonor = z.infer<typeof BloodDonorSchema>;
+export type BloodDonor = z.infer<typeof DonorSchema>;
+export const DonorsArraySchema = z.array(DonorSchema);
 
 export function useSearchDonorQuery() {
   const query = useQuery({
@@ -23,7 +31,7 @@ export function useSearchDonorQuery() {
 
       if (res.ok) {
         const data: unknown = await res.json();
-        const parsedData = BloodDonorArraySchema.parse(data);
+        const parsedData = DonorsArraySchema.parse(data);
 
         return parsedData;
       }

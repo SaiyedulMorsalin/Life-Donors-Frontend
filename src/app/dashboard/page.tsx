@@ -22,12 +22,10 @@ function DashboardPage() {
     if (!isMounted) return;
     if (!data) return;
 
-    const info = data[0]!;
-
     if (
-      info.date_of_donation === null ||
-      info.gender === "" ||
-      info.district === ""
+      data.date_of_donation === null ||
+      data.gender === "" ||
+      data.district === ""
     ) {
       router.push("/profile");
     }
@@ -42,7 +40,7 @@ function DashboardPage() {
   }, [authData, isMounted]);
 
   return (
-    <main className="min-h-[85dvh] w-full">
+    <main className="min-h-[85dvh] w-full bg-gray-100">
       <h2 className="mx-auto max-w-7xl px-2 py-8 text-3xl font-bold xl:px-0">
         Dashboard
       </h2>

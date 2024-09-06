@@ -100,12 +100,10 @@ function RequestDonor() {
   useEffect(() => {
     if (!profileData) return;
 
-    const info = profileData[0]!;
-
     if (
-      info.date_of_donation === null ||
-      info.gender === "" ||
-      info.district === ""
+      profileData.date_of_donation === null ||
+      profileData.gender === "" ||
+      profileData.district === ""
     ) {
       router.push("/profile");
     }
@@ -120,9 +118,12 @@ function RequestDonor() {
       });
     }
 
+    if (!profileData) return;
+    if (!profileData) return;
     if (!userData) return;
 
     const formValues = {
+      req_donor_id: parseInt(`${profileData.id}`),
       user_id: parseInt(userData.userId!),
       blood_group: data.blood_group,
       blood_request_type: data.blood_request_type,
@@ -161,9 +162,9 @@ function RequestDonor() {
   }, [isSuccess, isError]);
 
   return (
-    <main className="min-h-[85dvh]">
+    <main className="min-h-[85dvh] bg-gray-100">
       <div className="mx-auto max-w-7xl px-2 py-8 xl:px-0">
-        <h2 className="py-8 text-center text-3xl font-bold text-rose-500">
+        <h2 className="pb-8 text-center text-3xl font-bold text-rose-500">
           Request for Donation
         </h2>
         <Card className="mx-auto max-w-md p-4">

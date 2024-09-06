@@ -41,7 +41,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useSearchParams } from "next/navigation";
-import { type BloodDonor, BloodDonorArraySchema } from "@/query/searchDonor";
+import { DonorsArraySchema, type BloodDonor } from "@/query/searchDonor";
 
 const FormSchema = z.object({
   district: z
@@ -87,7 +87,7 @@ export default function Search({ updateSearchDonors }: Props) {
 
     if (res.ok) {
       const data: unknown = await res.json();
-      const parsedData = BloodDonorArraySchema.parse(data);
+      const parsedData = DonorsArraySchema.parse(data);
       updateSearchDonors(parsedData);
     }
   }

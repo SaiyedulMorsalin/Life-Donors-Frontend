@@ -46,20 +46,23 @@ export default function Avatar() {
             <User size={40} />
           </div>
           <div className="w-full text-center">
-            {profileData?.map((item) => (
-              <div key={item.user}>
+            {profileData ? (
+              <div>
                 <h3 className="text-xl font-bold text-gray-900">
-                  {item.user.split(" ")[0]} ({item.blood_group})
+                  {profileData.user.username.split(" ")[0]} (
+                  {profileData.blood_group})
                 </h3>
                 <div className="flex items-center justify-center gap-2 py-2 text-base font-medium text-gray-800">
                   <MapPin size={18} />
                   <p>
-                    {item.district.charAt(0).toUpperCase() +
-                      item.district.slice(1)}
+                    {profileData.district
+                      ? profileData.district.charAt(0).toUpperCase() +
+                        profileData.district.slice(1)
+                      : null}
                   </p>
                 </div>
               </div>
-            ))}
+            ) : null}
 
             <div className="grid w-full grid-cols-2 gap-2 py-4">
               <div className="flex w-full flex-col items-center justify-center rounded-md bg-rose-100/40 py-4 text-center">

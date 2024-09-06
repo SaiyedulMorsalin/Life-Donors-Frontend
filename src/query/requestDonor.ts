@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   data: {
+    req_donor_id: number;
     user_id: number;
     blood_group: string;
     blood_request_type: "Running" | "Pending" | "Completed";
@@ -16,16 +17,18 @@ export function useRequestDonorMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async ({ data }: Props) => {
-      await fetch(`https://life-donors.onrender.com/users/create/request/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `https://life-donors.onrender.com/users/create/request/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify({
-          ...data,
-          user_id: data.user_id,
-        }),
-      });
+      );
+
+      if (!res.ok) throw new Error();
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["dashboard"] });

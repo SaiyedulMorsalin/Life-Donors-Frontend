@@ -22,7 +22,7 @@ function HomePage() {
                 text="Platform to Connect, Donate, and Save Lives"
               />
 
-              <p className="md:text-lg lg:text-xl">
+              <p className="text-black/70 md:text-lg lg:text-xl">
                 LifeDonors is a free platform to help blood searchers or
                 patients connect with voluntary blood donors across Bangladesh.
                 Your donation is a ray of hope for someone in need.
@@ -46,10 +46,10 @@ function HomePage() {
         <div className="mx-auto flex h-full w-full max-w-7xl flex-col items-center justify-center gap-8 px-2 text-center md:text-left xl:px-0">
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-4">
             <div className="flex h-full w-full flex-col items-start justify-center">
-              <h2 className="w-full text-balance pb-4 text-center text-3xl font-bold text-rose-600 md:text-left">
+              <h2 className="w-full text-balance pb-4 text-center text-3xl font-bold text-rose-600 md:text-left md:text-4xl lg:text-5xl">
                 What is LifeDonors?
               </h2>
-              <p className="text-balance">
+              <p className="text-balance md:text-lg">
                 LifeDonors is an automated blood service that connects blood
                 searchers with voluntary donors in a moment through SMS.
                 LifeDonors is always a free service for all.
@@ -81,10 +81,10 @@ function HomePage() {
               />
             </div>
             <div className="order-1 flex h-full w-full flex-col items-center justify-center md:order-2 md:items-start">
-              <h2 className="w-full text-balance pb-4 text-center text-3xl font-bold text-rose-600 md:text-left">
+              <h2 className="w-full text-balance pb-4 text-center text-3xl font-bold text-rose-600 md:text-left md:text-4xl lg:text-5xl">
                 Why LifeDonors?
               </h2>
-              <div className="space-y-2">
+              <div className="space-y-2 md:text-lg">
                 <div className="flex items-center justify-center gap-2 md:items-start md:justify-start">
                   <BadgeCheck className="text-green-500" />
                   <p className="font-medium text-gray-800">100% Automated</p>
@@ -118,9 +118,9 @@ function HomePage() {
 
       <Stats />
 
-      <CurveSVG className="bg-white" fillColor="#fecdd3" />
+      <CurveSVG className="bg-gray-100" fillColor="#fecdd3" />
 
-      <section className="flex min-h-[50dvh] w-full items-center justify-center bg-center py-16 md:py-24 lg:py-32">
+      <section className="flex min-h-[50dvh] w-full items-center justify-center bg-gray-100 bg-center py-16 md:py-24 lg:py-32">
         <div className="container mx-auto max-w-3xl px-4 text-center">
           <div className="space-y-6">
             <h2 className="text-3xl font-bold tracking-tight text-red-500 md:text-4xl lg:text-5xl">

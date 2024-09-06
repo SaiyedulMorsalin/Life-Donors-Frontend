@@ -129,7 +129,7 @@ function RegisterPage() {
   }
 
   return (
-    <main className="min-h-[90dvh] w-full">
+    <main className="min-h-[90dvh] w-full bg-gray-100">
       <div className="mx-auto flex min-h-[90dvh] max-w-7xl flex-col items-center justify-center px-2 py-4 xl:px-0">
         <h2 className="py-8 text-center text-3xl font-bold text-rose-500">
           Let&apos;s Save A Life today
@@ -270,7 +270,7 @@ function RegisterPage() {
                     {isPending ? (
                       <Loader2 className="animate-spin" />
                     ) : (
-                      "Register"
+                      "Submit"
                     )}
                   </Button>
                 </div>

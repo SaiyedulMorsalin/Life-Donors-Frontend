@@ -64,7 +64,7 @@ function LoginPage() {
   }
 
   return (
-    <main className="min-h-[90dvh] w-full">
+    <main className="min-h-[90dvh] w-full bg-gray-100">
       <div className="mx-auto flex min-h-[90dvh] w-full max-w-7xl items-center justify-center py-4">
         <div className="mx-auto w-full px-4 py-4">
           <h2 className="py-8 text-center text-2xl font-semibold">
@@ -111,7 +111,7 @@ function LoginPage() {
                     {isPending ? (
                       <Loader2 className="animate-spin" />
                     ) : (
-                      "Login"
+                      "Submit"
                     )}
                   </Button>
                 </div>

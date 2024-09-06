@@ -1,20 +1,38 @@
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 
-const DonationRequestSchema = z.object({
-  donor: z.string(),
+const UserSchema = z.object({
+  username: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
+  is_active: z.boolean(),
+});
+
+const DonorSchema = z.object({
+  id: z.number(),
+  user: UserSchema,
+  blood_group: z.string(),
+  district: z.string().nullable(),
+  date_of_donation: z.string().nullable(),
+  gender: z.string().nullable(),
+  is_available: z.boolean(),
+  mobile_number: z.string(),
+  email: z.string(),
+});
+
+export const BloodRequestSchema = z.object({
+  donor: DonorSchema,
   id: z.number(),
   blood_group: z.string(),
-  blood_request_type: z.enum(["Pending", "Running", "Completed"]),
-  district: z.string(),
-  date_of_donation: z.string(),
-  gender: z.enum(["Male", "Female"]),
-  accepted_donor_id: z.string().optional(),
+  blood_request_type: z.string(),
+  district: z.string().nullable(),
+  date_of_donation: z.string().nullable(),
+  gender: z.string().nullable(),
+  accepted_donor_id: z.string().nullable(),
   details: z.string(),
 });
 
-export type RequestType = z.infer<typeof DonationRequestSchema>;
-export const DonationRequestsSchema = z.array(DonationRequestSchema);
+const BloodRequestsArraySchema = z.array(BloodRequestSchema);
 
 export function useAvailableRequestsQuery(userId: string | undefined) {
   return useQuery({
@@ -32,7 +50,7 @@ export function useAvailableRequestsQuery(userId: string | undefined) {
       }
 
       const data: unknown = await response.json();
-      return DonationRequestsSchema.parse(data);
+      return BloodRequestsArraySchema.parse(data);
     },
     refetchInterval: 5000,
     enabled: !!userId,

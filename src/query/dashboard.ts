@@ -2,32 +2,53 @@ import { type UserData } from "@/store/userData";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 
-export const RequestSchema = z.object({
+const userSchema = z.object({
+  username: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
+  is_active: z.boolean(),
+});
+
+const donorSchema = z.object({
+  id: z.number(),
+  user: userSchema,
+  blood_group: z.string(),
+  district: z.string(),
+  date_of_donation: z.string().nullable(),
+  gender: z.string(),
+  is_available: z.boolean(),
+  mobile_number: z.string(),
+  email: z.string().email(),
+});
+
+export const myRequestSchema = z.object({
+  donor: donorSchema,
   id: z.number(),
   blood_group: z.string(),
   blood_request_type: z.string(),
-  date_of_donation: z.string().nullable(),
-  details: z.string(),
   district: z.string(),
-  donor: z.string(),
-  accepted_donor_id: z.string(),
-  gender: z.enum(["Male", "Female"]),
+  date_of_donation: z.string().nullable(),
+  gender: z.string(),
+  accepted_donor_id: z.string().nullable(),
+  details: z.string(),
 });
 
-const DonateSchema = z.object({
+const myDonateSchema = z.object({
   donor: z.string(),
   blood_group: z.string(),
   district: z.string(),
   date_of_donation: z.string(),
   blood_request_type: z.string(),
-  gender: z.enum(["Male", "Female"]),
+  approve_donor_id: z.string(),
+  gender: z.string(),
   details: z.string(),
 });
 
-const ApiResponseSchema = z.object({
+const dataSchema = z.object({
   donor_id: z.number(),
-  my_requests: z.array(RequestSchema).nullable(),
-  my_donate: z.array(DonateSchema),
+  donor_mobile_number: z.string(),
+  my_requests: z.array(myRequestSchema),
+  my_donate: z.array(myDonateSchema),
 });
 
 export function useDashboardQuery({
@@ -44,7 +65,7 @@ export function useDashboardQuery({
         );
 
         const data: unknown = await response_Dashboard.json();
-        const parsedData = ApiResponseSchema.parse(data);
+        const parsedData = dataSchema.parse(data);
 
         return parsedData;
       }

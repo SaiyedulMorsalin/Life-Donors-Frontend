@@ -132,6 +132,7 @@ export default function CreateRequest({ authData }: Props) {
     }
 
     const formValues = {
+      req_donor_id: parseInt(authData.userId!),
       user_id: parseInt(authData.userId!),
       blood_group: data.blood_group,
       blood_request_type: data.blood_request_type,
@@ -140,6 +141,8 @@ export default function CreateRequest({ authData }: Props) {
       gender: data.gender,
       details: getRandomNote(data.details),
     };
+
+    console.log(formValues);
 
     mutate({ data: formValues });
   }

@@ -1,10 +1,10 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import { useDashboardQuery } from "@/query/dashboard";
 import { type UserData } from "@/store/userData";
-import { CircleCheck, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import DonationItem from "./donationItem";
 
 type Props = {
   authData: UserData | null;
@@ -37,40 +37,18 @@ export default function MyDonations({ authData }: Props) {
                 District
               </p>
               <p className="w-full min-w-32 flex-1 text-center font-medium">
+                Receiver
+              </p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
                 Status
               </p>
             </div>
             <div className="divide flex w-full flex-col-reverse gap-2 divide-y divide-black/15">
               {data.my_donate?.map((item, index) => (
-                <div key={`${item.donor}-${index}`} className="py-2">
-                  <div className="flex items-center justify-between">
-                    <p className="w-full min-w-32 flex-1">
-                      {item.date_of_donation}
-                    </p>
-                    <p className="w-full min-w-32 flex-1 text-center">
-                      {item.blood_group}
-                    </p>
-                    <p className="w-full min-w-32 flex-1 text-center">
-                      {item.gender}
-                    </p>
-                    <p className="w-full min-w-32 flex-1 text-center">
-                      {item.district}
-                    </p>
-                    <div
-                      className={cn(
-                        "flex w-full min-w-32 flex-1 items-center justify-center gap-2",
-                        item.blood_request_type === "Completed"
-                          ? "text-green-500"
-                          : "",
-                      )}
-                    >
-                      <p>{item.blood_request_type}</p>
-                      {item.blood_request_type === "Completed" ? (
-                        <CircleCheck />
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
+                <DonationItem
+                  key={index + `${item.details.slice(0, 10)}`}
+                  item={item}
+                />
               ))}
             </div>
           </div>

@@ -11,12 +11,10 @@ import { useProfileDetailsQuery } from "@/query/profile";
 import { Loader2, User } from "lucide-react";
 
 type Props = {
-  status: string;
   donor_id: number;
 };
 
-export default function DonorDetailsPopup({ donor_id, status }: Props) {
-  const { data, isLoading, isError } = useProfileDetailsQuery(donor_id);
+export default function ReceiverDetailsPopUp({ donor_id }: Props) {
   const { toast } = useToast();
 
   function copyToClipboard(text: string, label: string) {
@@ -32,15 +30,11 @@ export default function DonorDetailsPopup({ donor_id, status }: Props) {
     );
   }
 
+  const { data, isLoading, isError } = useProfileDetailsQuery(donor_id);
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          disabled={status !== "Pending" ? false : true}
-          variant={status === "Pending" ? "ghost" : "outline"}
-        >
-          {status !== "Pending" ? "Details" : "No donor"}
-        </Button>
+        <Button variant={"outline"}>Details</Button>
       </PopoverTrigger>
       <PopoverContent>
         {data ? (
@@ -79,7 +73,7 @@ export default function DonorDetailsPopup({ donor_id, status }: Props) {
               </div>
               <div
                 onClick={() =>
-                  copyToClipboard(data.mobile_number, "Email address")
+                  copyToClipboard(data.email ?? "N/A", "Email address")
                 }
                 className="flex items-center justify-between gap-8 py-2 text-sm hover:cursor-help"
               >
@@ -90,7 +84,7 @@ export default function DonorDetailsPopup({ donor_id, status }: Props) {
               </div>
               <div
                 onClick={() =>
-                  copyToClipboard(data.mobile_number, "Mobile number")
+                  copyToClipboard(data.mobile_number ?? "N/A", "Mobile number")
                 }
                 className="flex items-center justify-between py-2 text-sm hover:cursor-help"
               >

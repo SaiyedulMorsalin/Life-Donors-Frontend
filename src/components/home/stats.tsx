@@ -32,10 +32,10 @@ export default function Stats() {
     >
       <div className="mx-auto flex h-full w-full max-w-7xl flex-col items-center justify-center gap-16 px-2 xl:px-0">
         <div className="">
-          <h1 className="pb-4 text-center text-3xl font-bold text-rose-700 md:text-4xl">
+          <h1 className="pb-4 text-center text-3xl font-bold text-rose-700 md:text-4xl lg:text-5xl">
             We&apos;re a network of dedicated blood heroes
           </h1>
-          <p className="max-w-2xl text-center text-gray-700 md:text-lg">
+          <p className="text-balance text-center text-gray-700 md:text-lg">
             Our mission is to connect those in need of blood with voluntary
             donors in the fastest and most efficient way possible. We operate
             across multiple districts, uniting donors under various groups to

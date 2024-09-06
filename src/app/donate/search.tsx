@@ -36,10 +36,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  DonationRequestsSchema,
-  type RequestType,
-} from "@/query/availableRequests";
+import { BloodRequestSchema } from "@/query/availableRequests";
 import { useCallback, type Dispatch, type SetStateAction } from "react";
 import { useSearchParams } from "next/navigation";
 import { useUserStore } from "@/store/userData";
@@ -48,6 +45,8 @@ const FormSchema = z.object({
   district: z.string().min(1, { message: "Please select a district." }),
   group: z.string().min(1, { message: "Please select a blood group." }),
 });
+
+export type RequestType = z.infer<typeof BloodRequestSchema>;
 
 type Props = {
   setterFn: ({ data }: { data: RequestType[] }) => void;
@@ -90,7 +89,7 @@ export default function Search({
       .then((res) => res.json())
       .finally(() => setIsSearchLoading(false));
 
-    const validatedData = DonationRequestsSchema.parse(response);
+    const validatedData = z.array(BloodRequestSchema).parse(response);
     setterFn({ data: validatedData });
   }
 

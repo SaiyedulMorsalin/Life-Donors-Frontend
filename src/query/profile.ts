@@ -1,18 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
-const userProfileSchema = z.object({
-  user: z.string(),
-  blood_group: z.string(),
-  district: z.string(),
-  date_of_donation: z.string().nullable(),
-  gender: z.string(),
-  is_available: z.boolean(),
-  mobile_number: z.string().nullable(),
-  email: z.string().nullable(),
+const userSchema = z.object({
+  username: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
+  is_active: z.boolean(),
 });
 
-const apiResponseSchema = z.array(userProfileSchema);
+const ProfileSchema = z.array(
+  z.object({
+    id: z.number(),
+    user: userSchema,
+    blood_group: z.string(),
+    district: z.string().nullable(),
+    date_of_donation: z.string().nullable(),
+    gender: z.string().nullable(),
+    is_available: z.boolean(),
+    mobile_number: z.string(),
+    email: z.string().email(),
+  }),
+);
 
 export function useProfileDetailsQuery(id: number | undefined) {
   const query = useQuery({
@@ -23,9 +31,9 @@ export function useProfileDetailsQuery(id: number | undefined) {
       );
       const data: unknown = await response.json();
 
-      const validatedData = apiResponseSchema.parse(data);
+      const validatedData = ProfileSchema.parse(data);
 
-      return validatedData;
+      return validatedData[0];
     },
     enabled: !!id,
     refetchInterval: 5000,

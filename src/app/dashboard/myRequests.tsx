@@ -5,18 +5,18 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import useApproveRequestMutation from "@/query/approveRequest";
-import { type RequestSchema, useDashboardQuery } from "@/query/dashboard";
+import { type myRequestSchema, useDashboardQuery } from "@/query/dashboard";
 import { type UserData } from "@/store/userData";
 import { CircleCheck, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { type z } from "zod";
+import type { z } from "zod";
 import DonorDetailsPopup from "./donorDetails";
-
-type UserRequestsType = z.infer<typeof RequestSchema>;
 
 type Props = {
   authData: UserData | null;
 };
+
+type UserRequestsType = z.infer<typeof myRequestSchema>;
 
 export default function MyRequests({ authData }: Props) {
   const { data, isLoading, isError } = useDashboardQuery({
@@ -103,7 +103,7 @@ export default function MyRequests({ authData }: Props) {
             </div>
             <div className="divide flex w-full flex-col-reverse gap-2 divide-y divide-black/15">
               {userRequests?.map((item, index) => (
-                <div key={`${item.donor}-${index}`} className="py-2">
+                <div key={`${item.id}-${index}`} className="py-2">
                   <div className="flex items-center justify-between">
                     <p className="w-full min-w-32 flex-1">
                       {item.date_of_donation}
@@ -119,7 +119,7 @@ export default function MyRequests({ authData }: Props) {
                     </p>
                     <p className="w-full min-w-32 flex-1 text-center">
                       <DonorDetailsPopup
-                        donor_id={parseInt(item.accepted_donor_id)}
+                        donor_id={parseInt(item.accepted_donor_id!)}
                         status={item.blood_request_type}
                       />
                     </p>

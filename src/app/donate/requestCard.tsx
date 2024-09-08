@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import useAcceptRequestMutation from "@/query/acceptRequest";
+import { useAcceptRequestMutation } from "@/query/acceptRequest";
 import { type BloodRequestSchema } from "@/query/availableRequests";
 import { useProfileDetailsQuery } from "@/query/profile";
 import { useUserStore } from "@/store/userData";
@@ -58,13 +58,12 @@ export default function RequestCard({ item }: Props) {
           {item.blood_group}
         </h3>
         <span
-          className={`rounded px-2 py-1 text-sm ${
-            item.blood_request_type === "Pending"
-              ? "bg-yellow-100 text-yellow-800"
-              : item.blood_request_type === "Running"
-                ? "bg-blue-100 text-blue-800"
-                : "bg-green-100 text-green-800"
-          }`}
+          className={`rounded px-2 py-1 text-sm ${item.blood_request_type === "Pending"
+            ? "bg-yellow-100 text-yellow-800"
+            : item.blood_request_type === "Running"
+              ? "bg-blue-100 text-blue-800"
+              : "bg-green-100 text-green-800"
+            }`}
         >
           {item.blood_request_type}
         </span>
@@ -85,7 +84,7 @@ export default function RequestCard({ item }: Props) {
         onClick={() =>
           copyToClipboard(acceptedDonor?.email ?? "N/A", "Email address")
         }
-        className="flex w-full items-center justify-start gap-2 hover:cursor-help"
+        className="flex w-full items-center justify-start gap-2 hover:cursor-pointer"
       >
         <p className="font-bold text-gray-500">Email:</p>
         <p className="flex-1 truncate text-gray-500">{acceptedDonor?.email}</p>
@@ -97,7 +96,7 @@ export default function RequestCard({ item }: Props) {
             "Mobile number",
           )
         }
-        className="text-gray-500 hover:cursor-help"
+        className="text-gray-500 hover:cursor-pointer"
       >
         <strong>Phone:</strong> {acceptedDonor?.mobile_number}
       </p>

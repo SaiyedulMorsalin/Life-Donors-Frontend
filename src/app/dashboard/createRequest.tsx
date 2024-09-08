@@ -280,8 +280,8 @@ export default function CreateRequest({ authData }: Props) {
                         >
                           {field.value !== ""
                             ? districts.find(
-                                (district) => district.value === field.value,
-                              )?.label
+                              (district) => district.value === field.value,
+                            )?.label
                             : "Select district"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>

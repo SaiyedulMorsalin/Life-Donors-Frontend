@@ -17,7 +17,7 @@ function VerifyPage() {
   }, [userData]);
 
   return (
-    <div className="min-h-[85dvh] space-y-6 bg-gray-100 py-20 text-center">
+    <div className="min-h-[70dvh] space-y-6 bg-gray-100 py-20 text-center">
       <h2 className="text-2xl font-bold">Your account has been created 🎉</h2>
       <p className="pb-8">
         Please check for the verification email and verify your email address.{" "}

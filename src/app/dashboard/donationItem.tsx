@@ -1,9 +1,13 @@
 import { cn } from "@/lib/utils";
-import { CircleCheck } from "lucide-react";
+import { CircleCheck, Loader2 } from "lucide-react";
 import ReceiverDetailsPopUp from "./ReceiverDetails";
+import { Button } from "@/components/ui/button";
+import { useCancelDonationMutation } from "@/query/acceptRequest";
 
 type Props = {
+  donorId: string | null | undefined;
   item: {
+    id: number;
     blood_group: string;
     district: string;
     date_of_donation: string;
@@ -15,7 +19,8 @@ type Props = {
   };
 };
 
-export default function DonationItem({ item }: Props) {
+export default function DonationItem({ item, donorId }: Props) {
+  const { mutate: cancelDonation, isPending } = useCancelDonationMutation();
   return (
     <div className="py-2">
       <div className="flex items-center justify-between">
@@ -35,6 +40,34 @@ export default function DonationItem({ item }: Props) {
           <p>{item.blood_request_type}</p>
           {item.blood_request_type === "Completed" ? <CircleCheck /> : null}
         </div>
+        <p className="flex w-full min-w-32 flex-1 items-center justify-center">
+          <Button
+            disabled={item.blood_request_type === "Pending" ? false : true}
+            variant={
+              item.blood_request_type === "Completed"
+                ? "outline"
+                : "destructive"
+            }
+            onClick={() => {
+              if (!donorId) return;
+
+              cancelDonation({
+                donorId: parseInt(donorId),
+                requestId: item.id,
+              });
+            }}
+            className="flex items-center justify-center gap-2"
+          >
+            {isPending ? (
+              <>
+                <p>Canceling</p>
+                <Loader2 className="animate-spin" />
+              </>
+            ) : (
+              "Cancel"
+            )}
+          </Button>
+        </p>
       </div>
     </div>
   );

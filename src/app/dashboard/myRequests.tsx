@@ -7,10 +7,19 @@ import { cn } from "@/lib/utils";
 import useApproveRequestMutation from "@/query/approveRequest";
 import { type myRequestSchema, useDashboardQuery } from "@/query/dashboard";
 import { type UserData } from "@/store/userData";
-import { CircleCheck, Loader2 } from "lucide-react";
+import { CircleCheck, Ellipsis, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { z } from "zod";
 import DonorDetailsPopup from "./donorDetails";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  useCancelRequestMutation,
+  useDeleteRequestMutation,
+} from "@/query/requestDonor";
 
 type Props = {
   authData: UserData | null;
@@ -32,6 +41,10 @@ export default function MyRequests({ authData }: Props) {
     isSuccess: isSuccess_approve,
     isError: isError_approve,
   } = useApproveRequestMutation();
+  const { mutate: deleteReq, isPending: isPending_Delete } =
+    useDeleteRequestMutation();
+  const { mutate: cancelReq, isPending: isPending_Cancel } =
+    useCancelRequestMutation();
 
   const { toast } = useToast();
 
@@ -95,10 +108,10 @@ export default function MyRequests({ authData }: Props) {
                 Donor Details
               </p>
               <p className="w-full min-w-32 flex-1 text-center font-medium">
-                Status
+                Actions
               </p>
               <p className="w-full min-w-32 flex-1 text-center font-medium">
-                Actions
+                More
               </p>
             </div>
             <div className="divide flex w-full flex-col-reverse gap-2 divide-y divide-black/15">
@@ -122,9 +135,6 @@ export default function MyRequests({ authData }: Props) {
                         donor_id={parseInt(item.accepted_donor_id!)}
                         status={item.blood_request_type}
                       />
-                    </p>
-                    <p className="w-full min-w-32 flex-1 text-center">
-                      {item.blood_request_type}
                     </p>
                     <div className="flex w-full min-w-32 flex-1 items-center justify-center">
                       <Button
@@ -166,13 +176,78 @@ export default function MyRequests({ authData }: Props) {
                         ) : null}
                       </Button>
                     </div>
+                    <p className="w-full min-w-32 flex-1 text-center">
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant={"outline"}>
+                            <Ellipsis />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <div className="w-full space-y-2">
+                            <Button
+                              disabled={
+                                item.blood_request_type !== "Running"
+                                  ? true
+                                  : false
+                              }
+                              className="flex w-full items-center justify-center gap-2"
+                              variant={"outline"}
+                              onClick={() => {
+                                if (!authData) return;
+
+                                cancelReq({
+                                  donorId: item.donor.id,
+                                  reqId: item.id,
+                                });
+                              }}
+                            >
+                              {isPending_Cancel ? (
+                                <>
+                                  <span>Canceling</span>
+                                  <Loader2 className="animate-spin" />
+                                </>
+                              ) : (
+                                "Cancel"
+                              )}
+                            </Button>
+                            <Button
+                              disabled={
+                                item.blood_request_type === "Completed"
+                                  ? true
+                                  : false
+                              }
+                              className="flex w-full items-center justify-center gap-2 bg-rose-200 hover:bg-red-300"
+                              variant={"outline"}
+                              onClick={() => {
+                                if (!authData) return;
+
+                                deleteReq({
+                                  donorId: item.donor.id,
+                                  reqId: item.id,
+                                });
+                              }}
+                            >
+                              {isPending_Delete ? (
+                                <>
+                                  <span>Deleting</span>
+                                  <Loader2 className="animate-spin" />
+                                </>
+                              ) : (
+                                "Delete"
+                              )}
+                            </Button>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         ) : (
-          <p>No requests are made yet.</p>
+          <p className="italic text-gray-600">No requests are made yet.</p>
         )}
       </Card>
     </div>

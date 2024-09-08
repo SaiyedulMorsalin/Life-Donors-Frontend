@@ -63,7 +63,7 @@ export default function DonorCard({ donor }: Props) {
               onClick={() =>
                 copyToClipboard(donor.email ?? "N/A", "Email address")
               }
-              className="flex items-start justify-between py-2 hover:cursor-help"
+              className="flex items-start justify-between py-2 hover:cursor-pointer"
             >
               <p className="font-medium text-gray-700">Email</p>
               <div className="max-w-[60%] overflow-hidden">
@@ -82,7 +82,7 @@ export default function DonorCard({ donor }: Props) {
           onClick={() =>
             copyToClipboard(donor.mobile_number ?? "N/A", "Mobile number")
           }
-          className="flex items-start justify-between py-2 hover:cursor-help"
+          className="flex items-start justify-between py-2 hover:cursor-pointer"
         >
           <p className="font-medium text-gray-600">Mobile</p>
           <p className="text-right font-semibold text-gray-600">

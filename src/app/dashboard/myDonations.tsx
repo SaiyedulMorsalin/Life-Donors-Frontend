@@ -42,18 +42,22 @@ export default function MyDonations({ authData }: Props) {
               <p className="w-full min-w-32 flex-1 text-center font-medium">
                 Status
               </p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
+                Action
+              </p>
             </div>
             <div className="divide flex w-full flex-col-reverse gap-2 divide-y divide-black/15">
               {data.my_donate?.map((item, index) => (
                 <DonationItem
                   key={index + `${item.details.slice(0, 10)}`}
                   item={item}
+                  donorId={authData?.userId}
                 />
               ))}
             </div>
           </div>
         ) : (
-          <p>You haven&apos;t donated yet.</p>
+          <p className="italic text-gray-600">No donations are made yet.</p>
         )}
       </Card>
     </div>

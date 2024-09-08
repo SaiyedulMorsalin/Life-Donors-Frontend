@@ -100,60 +100,6 @@ export default function Stats() {
             </dl>
           </div>
         </div>
-
-        {/* <div className="grid w-full grid-cols-1 items-center justify-center gap-8 sm:grid-cols-2 md:grid-cols-3">
-          <div className="flex flex-col items-center justify-center gap-4 rounded-md border border-rose-200 bg-rose-100 px-4 py-14 shadow-md">
-            <UsersRound size={40} color="red" />
-            <div className="flex items-center justify-center gap-3 text-3xl font-bold text-rose-700">
-              <AnimatedNumber
-                springOptions={{
-                  bounce: 0,
-                  duration: 2000,
-                }}
-                value={value_Donor}
-              />
-              <span>Donors</span>
-            </div>
-            <p className="text-center text-gray-600">
-              Join our ever-growing community of dedicated blood donors who are
-              saving lives every day.
-            </p>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-4 rounded-md border border-rose-200 bg-rose-100 px-4 py-14 shadow-md">
-            <MapPin size={40} color="red" />
-            <div className="flex items-center justify-center gap-3 text-3xl font-bold text-rose-700">
-              <AnimatedNumber
-                springOptions={{
-                  bounce: 0,
-                  duration: 2000,
-                }}
-                value={value_Districts}
-              />
-              <span>Districts</span>
-            </div>
-            <p className="text-center text-gray-600">
-              We are expanding our reach across districts to ensure that help is
-              available wherever needed.
-            </p>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-4 rounded-md border border-rose-200 bg-rose-100 px-4 py-14 shadow-md">
-            <HeartPulse size={40} color="red" />
-            <div className="flex items-center justify-center gap-3 text-3xl font-bold text-rose-700">
-              <AnimatedNumber
-                springOptions={{
-                  bounce: 0,
-                  duration: 2000,
-                }}
-                value={value_Groups}
-              />
-              <span>Groups</span>
-            </div>
-            <p className="text-center text-gray-600">
-              Diverse groups are organized to cater to all blood types, making
-              sure that everyone can find a match.
-            </p>
-          </div>
-        </div> */}
       </div>
     </section>
   );

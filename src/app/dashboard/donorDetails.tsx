@@ -70,8 +70,9 @@ export default function DonorDetailsPopup({ donor_id, status }: Props) {
               <div className="flex items-center justify-between py-2 text-sm">
                 <p className="font-semibold text-gray-700">Available</p>
                 <p
-                  className={`text-sm font-semibold ${data.is_available ? "text-green-600" : "text-red-600"
-                    }`}
+                  className={`text-sm font-semibold ${
+                    data.is_available ? "text-green-600" : "text-red-600"
+                  }`}
                 >
                   {data.is_available ? "Yes" : "No"}
                 </p>

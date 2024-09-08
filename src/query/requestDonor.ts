@@ -37,3 +37,52 @@ export function useRequestDonorMutation() {
 
   return { ...mutation };
 }
+
+type MutationProps = {
+  reqId: number;
+  donorId: number;
+};
+
+export function useDeleteRequestMutation() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async ({ donorId, reqId }: MutationProps) => {
+      await fetch(
+        `https://life-donors.onrender.com/users/delete/request/${reqId}/?donor_id=${donorId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+  });
+
+  return { ...mutation };
+}
+
+export function useCancelRequestMutation() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async ({ donorId, reqId }: MutationProps) => {
+      await fetch(
+        `https://life-donors.onrender.com/users/cancel/request/${reqId}/?donor_id=${donorId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+  });
+
+  return { ...mutation };
+}

@@ -34,6 +34,7 @@ export const myRequestSchema = z.object({
 });
 
 const myDonateSchema = z.object({
+  id: z.number(),
   donor: z.string(),
   blood_group: z.string(),
   district: z.string(),
@@ -70,7 +71,7 @@ export function useDashboardQuery({
         return parsedData;
       }
     },
-    refetchInterval: 5000,
+    refetchInterval: 2000,
     enabled: !!authData,
   });
 

@@ -18,7 +18,7 @@ export function useRegisterMutation() {
     mutationKey: ["register"],
     mutationFn: async ({ data }: Props) => {
       const response = await fetch(
-        "https://life-donors.onrender.com/users/register/",
+        "https://lifedonors.pythonanywhere.com/users/register/",
         {
           method: "POST",
           headers: {

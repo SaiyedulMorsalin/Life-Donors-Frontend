@@ -10,7 +10,7 @@ export default function useApproveRequestMutation() {
   const mutation = useMutation({
     mutationFn: async ({ donorId, requestId }: Props) => {
       await fetch(
-        `https://life-donors.onrender.com/users/approve/request/${requestId}/?donor_id=${donorId}`,
+        `https://lifedonors.pythonanywhere.com/users/approve/request/${requestId}/?donor_id=${donorId}`,
         {
           method: "PUT",
           headers: {

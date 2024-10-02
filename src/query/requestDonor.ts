@@ -18,7 +18,7 @@ export function useRequestDonorMutation() {
   const mutation = useMutation({
     mutationFn: async ({ data }: Props) => {
       const res = await fetch(
-        `https://life-donors.onrender.com/users/create/request/`,
+        `https://lifedonors.pythonanywhere.com/users/create/request/`,
         {
           method: "POST",
           headers: {

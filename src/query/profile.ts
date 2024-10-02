@@ -27,7 +27,7 @@ export function useProfileDetailsQuery(id: number | undefined) {
     queryKey: ["profile", id],
     queryFn: async () => {
       const response = await fetch(
-        `https://life-donors.onrender.com/users/profile/${id}/`,
+        `https://lifedonors.pythonanywhere.com/users/profile/${id}/`,
       );
       const data: unknown = await response.json();
 

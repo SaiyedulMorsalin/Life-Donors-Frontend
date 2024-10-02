@@ -42,7 +42,7 @@ export function useAvailableRequestsQuery(userId: string | undefined) {
         throw new Error("User ID is required");
       }
       const response = await fetch(
-        `https://life-donors.onrender.com/users/available_request/?donor_id=${userId}`,
+        `https://lifedonors.pythonanywhere.com/users/available_request/?donor_id=${userId}`,
       );
 
       if (!response.ok) {

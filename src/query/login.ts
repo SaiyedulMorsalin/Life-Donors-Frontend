@@ -20,7 +20,7 @@ export function useLoginMutation() {
       username,
     }: Props): Promise<LoginResponse> => {
       const response = await fetch(
-        "https://life-donors.onrender.com/users/login/",
+        "https://lifedonors.pythonanywhere.com/users/login/",
         {
           method: "POST",
           headers: {

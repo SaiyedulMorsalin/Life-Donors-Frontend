@@ -62,7 +62,7 @@ export function useDashboardQuery({
     queryFn: async () => {
       if (authData) {
         const response_Dashboard = await fetch(
-          `https://life-donors.onrender.com/users/dashboard/${authData.userId}/`,
+          `https://lifedonors.pythonanywhere.com/users/dashboard/${authData.userId}/`,
         );
 
         const data: unknown = await response_Dashboard.json();

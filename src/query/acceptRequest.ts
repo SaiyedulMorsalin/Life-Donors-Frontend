@@ -11,7 +11,7 @@ export function useAcceptRequestMutation() {
     mutationKey: ["accept-request"],
     mutationFn: async ({ donorId, requestId }: Props) => {
       await fetch(
-        `https://life-donors.onrender.com/users/accept/request/${requestId}/?donor_id=${donorId}`,
+        `https://lifedonors.pythonanywhere.com/users/accept/request/${requestId}/?donor_id=${donorId}`,
         {
           method: "PUT",
           headers: {

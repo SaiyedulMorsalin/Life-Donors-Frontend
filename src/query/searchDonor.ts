@@ -27,7 +27,7 @@ export function useSearchDonorQuery() {
   const query = useQuery({
     queryKey: ["search-donor"],
     queryFn: async () => {
-      const res = await fetch("https://life-donors.onrender.com/users/donors/");
+      const res = await fetch("https://lifedonors.pythonanywhere.com/users/donors/");
 
       if (res.ok) {
         const data: unknown = await res.json();

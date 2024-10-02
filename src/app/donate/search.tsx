@@ -84,7 +84,7 @@ export default function Search({
     setIsSearchLoading(true);
 
     const response: unknown = await fetch(
-      `https://life-donors.onrender.com/users/request_search/?${createQueryString("blood_group", values.group)}&${createQueryString("district", values.district)}&${createQueryString("donor_id", userData.userId!)}`,
+      `https://lifedonors.pythonanywhere.com/users/request_search/?${createQueryString("blood_group", values.group)}&${createQueryString("district", values.district)}&${createQueryString("donor_id", userData.userId!)}`,
     )
       .then((res) => res.json())
       .finally(() => setIsSearchLoading(false));
@@ -147,8 +147,8 @@ export default function Search({
                     >
                       {field.value !== ""
                         ? districts.find(
-                            (district) => district.value === field.value,
-                          )?.label
+                          (district) => district.value === field.value,
+                        )?.label
                         : "Select district"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>

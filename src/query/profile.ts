@@ -54,7 +54,7 @@ export function useUpdateProfileMutation() {
   const mutation = useMutation({
     mutationFn: async (values: Props) => {
       await fetch(
-        `https://life-donors.onrender.com/users/update/profile/${values.id}/`,
+        `https://lifedonors.pythonanywhere.com/users/update/profile/${values.id}/`,
         {
           method: "PUT",
           headers: {

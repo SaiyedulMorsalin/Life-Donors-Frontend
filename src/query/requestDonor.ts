@@ -48,7 +48,7 @@ export function useDeleteRequestMutation() {
   const mutation = useMutation({
     mutationFn: async ({ donorId, reqId }: MutationProps) => {
       await fetch(
-        `https://life-donors.onrender.com/users/delete/request/${reqId}/?donor_id=${donorId}`,
+        `https://lifedonors.pythonanywhere.com/users/delete/request/${reqId}/?donor_id=${donorId}`,
         {
           method: "DELETE",
           headers: {
@@ -70,7 +70,7 @@ export function useCancelRequestMutation() {
   const mutation = useMutation({
     mutationFn: async ({ donorId, reqId }: MutationProps) => {
       await fetch(
-        `https://life-donors.onrender.com/users/cancel/request/${reqId}/?donor_id=${donorId}`,
+        `https://lifedonors.pythonanywhere.com/users/cancel/request/${reqId}/?donor_id=${donorId}`,
         {
           method: "PUT",
           headers: {
